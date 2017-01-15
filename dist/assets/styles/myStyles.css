@@ -1,0 +1,47 @@
+.ta-editor {
+    min-height: 100px;
+    height: auto;
+    overflow: auto;
+    font-family: inherit;
+    font-size: 100%;
+    margin: 0px;
+}
+
+.module-name {
+    color: blue;
+}
+
+.topic-name {
+    color: green;
+}
+
+body{
+    padding:50px 0px 0px 0px;
+    z-index:0;
+}
+/* cloud */
+hr.style-five {
+    border: 0;
+    height: 0; /* Firefox... */
+    box-shadow: 0 0 10px 1px black;
+}
+
+/* Double-color dashed line */
+
+hr.style-three {
+    border: 0;
+    border-bottom: 1px dashed #ccc;
+    background: #999;
+}
+
+/* gradient */
+hr.style-two {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+input[type=text] {
+    border: none;
+    border-bottom: 2px solid black;
+}

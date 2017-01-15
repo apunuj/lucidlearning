@@ -1,0 +1,41 @@
+<div>
+    <div style="background-color:cornflowerblue">
+        <blockquote>
+            <h4>Great work! This is how your module looks like right now: </h4>
+        </blockquote>
+    </div>
+    <div>
+    <h3 style="text-align: center;">{{module.name | capitalize}}</h3>
+    <hr>
+    <p style="padding:3px;"></p>
+    <ul>
+        <li ng-repeat="topicObject in module.topics track by $index">
+            <button class="btn btn-xs btn-default pull-right" ng-click="remove(topicObject._id)">
+                <i class="fa fa-times-circle"></i>
+            </button>
+           <h4>{{topicObject.name | capitalize}}</h4>
+           <hr class="style-three">
+           <ul>
+               <li ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
+                   <button class="btn btn-xs btn-default pull-right" ng-click="remove(topicObject._id)">
+                        <i class="fa fa-times-circle"></i>
+                    </button>
+                   <p>{{learningPointObject.name}}</p>
+                   <hr class="style-two">
+               </li>
+               <p style="padding:5px;"></p>
+           </ul>
+        </li>
+    </ul>
+    </div>
+    <p style="padding: 5px;"></p>
+    <div class="row">
+        <div class="col-xs-6">
+            <button type="button" ui-sref="home" class="btn btn-warning center-block"> Make a new module</button>
+        </div>
+        <div class="col-xs-6">
+            <button type="button" ui-sref="content({id: module._id})" class="btn btn-primary center-block"> Add Content to this module</button>
+        </div>
+    </div>  
+    <p style="padding: 5px;"></p>
+</div>

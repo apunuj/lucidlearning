@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>lucid-app</title>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="assets/bower_components/textAngular/dist/textAngular.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css styles/font-awesome.css -->
+      <link rel="stylesheet" href="assets/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- endbuild -->
+    <!-- build:css styles/main.css -->
+    <link href="./assets/styles/main.css" rel="stylesheet">
+    <link href="./assets/styles/myStyles.css" rel="stylesheet">
+    <!-- endbuild -->
+</head>
+
+<body style="background-color:#E5E8E8;" ng-app="clientApp">
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+<div class="header">
+    <div class="navbar navbar-inverse navbar-fixed-top bg-faded" role="navigation">
+
+        <div class="container">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" ui-sref="home">Lucid</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="js-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a ui-sref="home">Home</a></li>
+                    <li><a href="#/about">About</a></li>
+                    <li><a href="#/">Contact</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div style ="background-color:#FDFEFE" class="col-xs-12 col-sm-8">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+    !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+    (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+    r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+    }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+</script>
+
+<!-- build:js({.tmp,app}) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="assets/bower_components/jquery/dist/jquery.js"></script>
+<script src="assets/bower_components/angular/angular.js"></script>
+<script src="assets/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="assets/bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="assets/bower_components/angular-resource/angular-resource.js"></script>
+<script src="assets/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="assets/bower_components/rangy/rangy-core.js"></script>
+<script src="assets/bower_components/rangy/rangy-classapplier.js"></script>
+<script src="assets/bower_components/rangy/rangy-highlighter.js"></script>
+<script src="assets/bower_components/rangy/rangy-selectionsaverestore.js"></script>
+<script src="assets/bower_components/rangy/rangy-serializer.js"></script>
+<script src="assets/bower_components/rangy/rangy-textrange.js"></script>
+<script src="assets/bower_components/textAngular/dist/textAngular.js"></script>
+<script src="assets/bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+<script src="assets/bower_components/textAngular/dist/textAngularSetup.js"></script>
+<script src="assets/bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="./app.js"></script>
+<script src="./shared/filters.js"></script>
+<script src="./shared/symbolize.js"></script>
+<script src="./shared/moduleFactory.js"></script>
+<script src="./shared/topicFactory.js"></script>
+<script src="./shared/learningPointFactory.js"></script>
+<script src="./components/editModule/ContentCtrl.js"></script>
+<script src="./components/editModule/ViewCtrl.js"></script>
+<script src="./components/newModule/CreateCtrl.js"></script>
+<script src="./components/newModule/learningPointCtrl.js"></script>
+<script src="./components/newModule/ModuleNameCtrl.js"></script>
+<script src="./components/newModule/TopicsCtrl.js"></script>
+<script src="./components/newModule/dataFactory.js"></script>
+<script src="./components/moduleDashboard/ExistingModulesCtrl.js"></script>
+<script src="./components/home/HomeCtrl.js"></script>
+<!-- endbuild -->
+</body>
+</html>
