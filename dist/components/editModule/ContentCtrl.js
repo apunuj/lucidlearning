@@ -4,6 +4,7 @@ angular.module('clientApp')
 
 .controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', function($scope, $state, $stateParams, moduleFactory, learningPointFactory) {
    
+   $scope.equation = "";
     $scope.module = moduleFactory.get({id: $stateParams.id})
                 .$promise.then(function(response){
                     $scope.module = response;
@@ -22,6 +23,8 @@ angular.module('clientApp')
     
     //for updating the content of individual learning points and refreshing the symbols
     $scope.updateContent = function(tindex, lindex) {
+        console.log($scope.equation);
+        $scope.module.topics[tindex].learningPoints[lindex].content = $scope.module.topics[tindex].learningPoints[lindex].content + $scope.equation;
         $scope.module.topics[tindex].learningPoints[lindex].content = symbolize($scope.module.topics[tindex].learningPoints[lindex].content);
         learningPointFactory.update({
             id: $stateParams.id,

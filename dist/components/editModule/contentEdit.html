@@ -3,13 +3,15 @@
         <li class="active">Content</li>
         <li><a ui-sref="view({id: module._id})">View</a></li>
     </ol>
+    <a type ="button" class="btn btn-default pull-right" href="javascript:OpenLatexEditor('testbox','html','')">Equation Editor</a>
+    <div type="text" id="testbox" ng-model="equation" rows="1" cols="40"></textarea>
     <h3 class="module-name" style="text-align: center;">{{module.name | capitalize}}</h3>
     <div ng-repeat="topicObject in module.topics track by $index">
         <h4 class="topic-name">{{topicObject.name | capitalize}}</h4>
         <div ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
             <button class="btn btn-default pull-right" ng-click="updateContent($parent.$index, $index)">update</button>
             <h4>{{learningPointObject.name | capitalize}}</h4>
-            <div text-angular ng-model="learningPointObject.content"></div>
+            <div id = "testbox-{{$index}}" text-angular ng-model="learningPointObject.content"></div>
         </div>
     </div>
     <p style="padding: 5px;"></p>
