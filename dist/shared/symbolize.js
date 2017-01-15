@@ -6,7 +6,7 @@ var symbolize = function(str) {
     }
     return str.replace(/&amp;\S/g, convert);
 };
-return symbolize;
+module.exports = symbolize;
 
 /**
  * Usage:
