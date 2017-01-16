@@ -18,14 +18,18 @@
                 <li class="list-group-item" ng-repeat="learningPointObject in topicObject.learningPoints track by $index">{{learningPointObject.name}}</li>
             </div>
             <form class="form-inline" ng-submit="addLearningPoint($index)" name="learningPointForm">
-                <input type="text" class="input-md col-sm-8" placeholder="Enter New Learning Point" ng-model="topicObject.newLearningPoint">
-                <div class="col-sm-2">
+                <input type="text" class="input-md col-xs-8" placeholder="Enter New Learning Point" ng-model="topicObject.newLearningPoint">
+                <div class="col-xs-2">
                     <button type="submit" class="btn btn-sm btn-success">Add Learning Point</button>
                 </div>
             </form>
             <p style="padding: 10px;"></p>
         </div>
         <p style="padding: 10px;"></p>
-        <button type="button" ng-click="submitLearningPoints()" class="btn btn-info btn-sm">Save And Continue</button>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" ng-click="submitLearningPoints()" class="btn btn-info btn-sm">Save And Continue</button>
+            </div>
+        </div>
     </div>
 </div>
