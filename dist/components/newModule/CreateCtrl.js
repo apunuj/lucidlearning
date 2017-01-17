@@ -153,6 +153,7 @@ angular.module('clientApp')
         .$promise.then(function(updatedTopic){
             console.log(updatedTopic);
             $scope.editTopic(tindex);
+            $state.go($state.current, {}, {reload: true});
         },
         function(updatedTopic){
             console.log(updatedTopic.status);
