@@ -18,25 +18,36 @@ angular.module('clientApp')
                             };
                         }
                         $scope.showTopicForm = false;
-                        $scope.toggleTopicForm = function(){
-                            $scope.showTopicForm = !$scope.showTopicForm;
-                        }
                         
                         $scope.showLearningPoint = [];
                         for (var index = 0; index < $scope.module.topics.length; index++) {
                             $scope.showLearningPoint.push(false);
                         }
-                        $scope.toggleShowLearningPoint = function(tindex) {
-                            $scope.showLearningPoint[tindex] = !$scope.showLearningPoint[tindex];
+                       
+                        $scope.editTopicToggle=[];
+                        for (var index = 0; index < $scope.module.topics.length; index++) {
+                            $scope.editTopicToggle.push(false);
                         }
                     },
                     function(response){
                         console.log(response.status);
                     });
 
-    
-    $scope.removeTopic = function(topicId) {
-        topicFactory.remove({id:$stateParams.id, tid: topicId})
+//Toggle Functions
+    $scope.toggleTopicForm = function(){
+        $scope.showTopicForm = !$scope.showTopicForm;
+    }
+    $scope.toggleShowLearningPoint = function(tindex) {
+        $scope.showLearningPoint[tindex] = !$scope.showLearningPoint[tindex];
+    }
+    $scope.editTopic = function(tindex) {
+        $scope.editTopicToggle[tindex] = !$scope.editTopicToggle[tindex];
+        console.log($scope.editTopicToggle[tindex]);
+    };
+
+//Structure Edit Functions
+    $scope.removeTopic = function(tindex) {
+        topicFactory.remove({id:$stateParams.id, tid: $scope.module.topics[tindex]._id})
         .$promise.then(function(response){
             console.log(response);
             $state.go($state.current, {}, {reload: true});
@@ -77,14 +88,74 @@ angular.module('clientApp')
         learningPointFactory.save({id:$stateParams.id, tid:$scope.module.topics[tindex]._id},$scope.module.topics[tindex].newLearningPointObject)
         .$promise.then(function(response){
             console.log(response);
+            $scope.module.topics[tindex].learningPoints.push($scope.module.topics[tindex].newLearningPointObject);
             $scope.module.topics[tindex].newLearningPointObject = {
                 name: "",
                 content: ""
             };
-            $state.go($state.current, {}, {reload: true});
+            //$state.go($state.current, {}, {reload: true});
         },
         function(response){
             console.log(response.status);
+        });
+    };
+
+    $scope.moveTopicUp = function(tindex) {
+        topicFactory.get({id: $stateParams.id, tid: $scope.module.topics[tindex-1]._id})
+        .$promise.then(function(previousTopic) {
+            topicFactory.update({id: $stateParams.id, tid: $scope.module.topics[tindex-1]._id}, {name: $scope.module.topics[tindex].name, learningPoints: $scope.module.topics[tindex].learningPoints})
+            .$promise.then(function(movingTopic) {
+                console.log(movingTopic);
+                topicFactory.update({id: $stateParams.id, tid: $scope.module.topics[tindex]._id}, {name: previousTopic.name, learningPoints: previousTopic.learningPoints})
+                .$promise.then(function(previousTopic) {
+                    console.log(previousTopic);
+                    $state.go($state.current, {}, {reload: true});
+                },
+                function(previousTopic) {
+                    console.log(previousTopic.status);
+                });
+            },
+            function(movingTopic){
+                console.log(movingTopic.status);
+            });
+        }, 
+        function(previousTopic){
+            console.log(previousTopic.status);
+        });
+    };
+
+    $scope.moveTopicDown = function(tindex) {
+        topicFactory.get({id: $stateParams.id, tid: $scope.module.topics[tindex+1]._id})
+        .$promise.then(function(previousTopic) {
+            topicFactory.update({id: $stateParams.id, tid: $scope.module.topics[tindex+1]._id}, {name: $scope.module.topics[tindex].name, learningPoints: $scope.module.topics[tindex].learningPoints})
+            .$promise.then(function(movingTopic) {
+                console.log(movingTopic);
+                topicFactory.update({id: $stateParams.id, tid: $scope.module.topics[tindex]._id}, {name: previousTopic.name, learningPoints: previousTopic.learningPoints})
+                .$promise.then(function(previousTopic) {
+                    console.log(previousTopic);
+                    $state.go($state.current, {}, {reload: true});
+                },
+                function(previousTopic) {
+                    console.log(previousTopic.status);
+                });
+            },
+            function(movingTopic){
+                console.log(movingTopic.status);
+            });
+        }, 
+        function(previousTopic){
+            console.log(previousTopic.status);
+        });
+    };
+
+    $scope.submitNewTopicName = function(tindex) {
+        topicFactory.update({id: $stateParams.id, tid: $scope.module.topics[tindex]._id}, {name: $scope.module.topics[tindex].name, learningPoints: $scope.module.topics[tindex].learningPoints})
+        .$promise.then(function(updatedTopic){
+            console.log(updatedTopic);
+            $scope.editTopic(tindex);
+        },
+        function(updatedTopic){
+            console.log(updatedTopic.status);
         });
     };
 

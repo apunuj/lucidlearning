@@ -1,7 +1,7 @@
 <div style ="background-color:#FDFEFE" class="col-xs-12 col-sm-8"> 
     <div style="background-color:cornflowerblue">
         <blockquote>
-            <h4>Great work! This is how your module looks like right now: </h4>
+            <h4>Great work! This is how your module looks like right now. Feel free to edit the structure: </h4>
         </blockquote>
     </div>
     <div>
@@ -11,20 +11,32 @@
             <div>
             <div ng-repeat="topicObject in module.topics track by $index">
                 <div class="button-group pull-right">
-                    <button class="btn btn-xs btn-success pull-right" ng-click="removeTopic(topicObject._id)">
+                    <button class="btn btn-xs btn-success pull-right" ng-click="removeTopic($index)">
                         <i class="fa fa-times"></i>
                     </button>
-                    <button class="btn btn-xs btn-success pull-right" ng-click="moveTopicUp(topicObject._id)">
+                    <button class="btn btn-xs btn-success pull-right" ng-click="moveTopicUp($index)">
                         <i class="fa fa-arrow-up"></i>
                     </button>
-                    <button class="btn btn-xs btn-success pull-right" ng-click="moveTopicDown(topicObject._id)">
+                    <button class="btn btn-xs btn-success pull-right" ng-click="moveTopicDown($index)">
                         <i class="fa fa-arrow-down"></i>
                     </button>
-                    <button class="btn btn-xs btn-success pull-right" ng-click="editTopic(topicObject._id)">
+                    <button class="btn btn-xs btn-success pull-right" ng-click="editTopic($index)">
                         <i class="fa fa-edit"></i>
                     </button>
                 </div>
-                <h4><button class="btn btn-xs btn-default" ng-click="toggleShowLearningPoint($index)"><i ng-class="{'fa fa-caret-right':!showLearningPoint[$index],'fa fa-caret-down':showLearningPoint[$index]}"></i></button>&nbsp;{{topicObject.name | capitalize}}</h4>
+                <div>
+                    <div ng-if="!editTopicToggle[$index]">
+                        <h4><button class="btn btn-xs btn-default" ng-click="toggleShowLearningPoint($index)"><i ng-class="{'fa fa-caret-right':!showLearningPoint[$index],'fa fa-caret-down':showLearningPoint[$index]}"></i></button>&nbsp;{{topicObject.name | capitalize}}</h4>
+                    </div>
+                    <div ng-if="editTopicToggle[$index]">
+                        <form class="form" ng-submit="submitNewTopicName($index)">
+                            <p>
+                                <input type="text" class="input-md col-xs-8" ng-model="topicObject.name">
+                            </p>
+                        </form>
+                        <p style="padding:5px;"></p>
+                    </div>
+                </div>
                 <hr>
                 <div ng-if="showLearningPoint[$index]">
                     <ul>

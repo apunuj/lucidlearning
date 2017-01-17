@@ -143,7 +143,7 @@ moduleRouter.route('/:id/topics/:tid')
                 next(err);
             } 
             console.log('Topics updated')
-            res.json(module);
+            res.json(module.topics[i]);
         });
     });
 })
