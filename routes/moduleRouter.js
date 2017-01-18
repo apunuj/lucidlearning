@@ -3,8 +3,10 @@ var moduleRouter = express.Router();
 
 var Modules = require('../models/modules');
 
+var Verify = require('./verify');
+
 moduleRouter.route('/')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Modules.find(req.query, function(err, modules) {
         if (err) {
             console.log(err);
@@ -13,7 +15,7 @@ moduleRouter.route('/')
         res.json(modules);
     });
 })
-.post(function(req, res, next){
+.post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.create(req.body, function(err, module){
         if (err) {
             console.log(err);
@@ -25,7 +27,7 @@ moduleRouter.route('/')
         }
     });
 })
-.delete(function(req, res, next) {
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
     Modules.remove({}, function(err, resp){
         if (err) {
             console.log(err);
@@ -36,7 +38,7 @@ moduleRouter.route('/')
 });
 
 moduleRouter.route('/:id')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -45,7 +47,7 @@ moduleRouter.route('/:id')
         res.json(module);
     });
 })
-.put(function(req, res, next) {
+.put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
     Modules.findByIdAndUpdate(req.params.id, {
         $set: req.body
     }, {
@@ -58,7 +60,7 @@ moduleRouter.route('/:id')
         res.json(module)
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findByIdAndRemove(req.params.id, function(err, resp){
         if (err) {
            console.log(err);
@@ -69,7 +71,7 @@ moduleRouter.route('/:id')
 });
 
 moduleRouter.route('/:id/topics')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
        if (err) {
            console.log(err);
@@ -78,7 +80,7 @@ moduleRouter.route('/:id/topics')
         res.json(module.topics);
     });
 })
-.post(function(req, res, next){
+.post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -95,7 +97,7 @@ moduleRouter.route('/:id/topics')
         });
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -118,7 +120,7 @@ moduleRouter.route('/:id/topics')
 });
 
 moduleRouter.route('/:id/topics/:tid')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -127,7 +129,7 @@ moduleRouter.route('/:id/topics/:tid')
         res.json(module.topics.id(req.params.tid));
     });
 })
-.put(function(req, res, next){
+.put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -147,7 +149,7 @@ moduleRouter.route('/:id/topics/:tid')
         });
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -165,7 +167,7 @@ moduleRouter.route('/:id/topics/:tid')
 });
 
 moduleRouter.route('/:id/topics/:tid/learningPoints')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
        if (err) {
            console.log(err);
@@ -174,7 +176,7 @@ moduleRouter.route('/:id/topics/:tid/learningPoints')
        res.json(module.topics.id(req.params.tid).learningPoints);
     });
 })
-.post(function(req, res, next){
+.post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -191,7 +193,7 @@ moduleRouter.route('/:id/topics/:tid/learningPoints')
         });
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -214,7 +216,7 @@ moduleRouter.route('/:id/topics/:tid/learningPoints')
 });
 
 moduleRouter.route('/:id/topics/:tid/learningPoints/:lid')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -223,7 +225,7 @@ moduleRouter.route('/:id/topics/:tid/learningPoints/:lid')
         res.json(module.topics.id(req.params.tid).learningPoints.id(req.params.lid));
     });
 })
-.put(function(req, res, next){
+.put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -240,11 +242,11 @@ moduleRouter.route('/:id/topics/:tid/learningPoints/:lid')
                 next(err);
             } 
             console.log('Learning Point updated')
-            res.json(module);
+            res.json(module.topics.id(req.params.tid).learningPoints[i]);
         });
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);

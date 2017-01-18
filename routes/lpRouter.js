@@ -2,9 +2,10 @@ var express = require('express');
 var lpRouter = express.Router();
 
 var LearningPoints = require('../models/learningPoints');
+var Verify = require('./verify');
 
 lpRouter.route('/')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     LearningPoints.find({}, function(err, learningPoints) {
         if (err) {
             console.log(err);
@@ -13,7 +14,7 @@ lpRouter.route('/')
         res.json(learningPoints);
     });
 })
-.post(function(req, res, next){
+.post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     LearningPoints.create(req.body, function(err, learningPoint){
         if (err) {
             console.log(err);
@@ -27,7 +28,7 @@ lpRouter.route('/')
         res.end('Added the LP with ID: '+id);
     });
 })
-.delete(function(req, res, next) {
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
     LearningPoints.remove({}, function(err, resp){
         if (err) {
             console.log(err);
@@ -38,7 +39,7 @@ lpRouter.route('/')
 });
 
 lpRouter.route('/:id')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     LearningPoints.findById(req.params.id, function(err, learningPoint){
         if (err) {
            console.log(err);
@@ -47,7 +48,7 @@ lpRouter.route('/:id')
         res.json(learningPoint);
     });
 })
-.put(function(req, res, next) {
+.put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
     LearningPoints.findByIdAndUpdate(req.params.id, {
         $set: req.body
     }, {
@@ -60,7 +61,7 @@ lpRouter.route('/:id')
         res.json(learningPoint);
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     LearningPoints.findByIdAndRemove(req.params.id, function(err, resp){
         if (err) {
            console.log(err);

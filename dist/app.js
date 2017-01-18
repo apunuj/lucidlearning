@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clientApp', [
-    'ngCookies',
+    'ngDialog',
     'ngResource',
     'textAngular',
     'ui.router'
@@ -29,43 +29,43 @@ angular.module('clientApp', [
 
     .state('existing', {
         url: '/existingModules',
-        templateUrl: 'components/moduleDashboard/existingModules.html',
+        templateUrl: 'components/dashboard/existingModules.html',
         controller: 'ExistingModulesCtrl'
     })
 
     .state('newModule', {
         url: '/newModule',
-        templateUrl: 'components/newModule/moduleName.html',
+        templateUrl: 'components/brainstorm/views/moduleName.html',
         controller: 'ModuleNameCtrl'
     })
 
     .state('topics', {
         url: '/topics',
-        templateUrl: 'components/newModule/topicsList.html',
+        templateUrl: 'components/brainstorm/views/topicsList.html',
         controller: 'TopicsCtrl'
     })
 
     .state('learningPoints', {
         url: '/learningPoints',
-        templateUrl: 'components/newModule/learningPointsList.html',
+        templateUrl: 'components/brainstorm/views/learningPointsList.html',
         controller: 'learningPointCtrl'
     })
 
     .state('createModule', {
         url: '/createModule/:id',
-        templateUrl: 'components/newModule/createModule.html',
+        templateUrl: 'components/organize/createModule.html',
         controller: 'CreateCtrl'
     })
 
     .state('content', {
         url: '/content/:id',
-        templateUrl: 'components/editModule/contentEdit.html',
+        templateUrl: 'components/create/views/contentEdit.html',
         controller: 'ContentCtrl'
     })
 
     .state('view', {
         url: '/view/:id',
-        templateUrl: 'components/editModule/contentView.html',
+        templateUrl: 'components/preview/contentView.html',
         controller: 'ViewCtrl'
     });
 

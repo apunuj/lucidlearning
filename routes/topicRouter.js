@@ -2,9 +2,10 @@ var express = require('express');
 var topicRouter = express.Router();
 
 var Topics = require('../models/topics');
+var Verify = require('./verify');
 
 topicRouter.route('/')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Topics.find({}, function(err, topics) {
         if (err) {
             console.log(err);
@@ -13,7 +14,7 @@ topicRouter.route('/')
         res.json(topics);
     });
 })
-.post(function(req, res, next){
+.post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Topics.create(req.body, function(err, topic){
         if (err) {
             console.log(err);
@@ -27,7 +28,7 @@ topicRouter.route('/')
         res.end('Added the topic with ID: '+id);
     });
 })
-.delete(function(req, res, next) {
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
     Topics.remove({}, function(err, resp){
         if (err) {
             console.log(err);
@@ -38,7 +39,7 @@ topicRouter.route('/')
 });
 
 topicRouter.route('/:id')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Topics.findById(req.params.id, function(err, topic){
         if (err) {
            console.log(err);
@@ -47,7 +48,7 @@ topicRouter.route('/:id')
         res.json(topic);
     });
 })
-.put(function(req, res, next) {
+.put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
     Topics.findByIdAndUpdate(req.params.id, {
         $set: req.body
     }, {
@@ -60,7 +61,7 @@ topicRouter.route('/:id')
         res.json(topic);
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Topics.findByIdAndRemove(req.params.id, function(err, resp){
         if (err) {
            console.log(err);
@@ -71,7 +72,7 @@ topicRouter.route('/:id')
 });
 
 topicRouter.route('/:id/learningPoints')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Topics.findById(req.params.id, function(err, topic){
        if (err) {
            console.log(err);
@@ -80,7 +81,7 @@ topicRouter.route('/:id/learningPoints')
         res.json(topic.learningPoints);
     });
 })
-.post(function(req, res, next){
+.post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Topics.findById(req.params.id, function(err, topic){
         if (err) {
            console.log(err);
@@ -97,7 +98,7 @@ topicRouter.route('/:id/learningPoints')
         });
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Topics.findById(req.params.id, function(err, topic){
         if (err) {
            console.log(err);
@@ -120,7 +121,7 @@ topicRouter.route('/:id/learningPoints')
 });
 
 topicRouter.route('/:id/learningPoints/:lid')
-.get(function(req, res, next){
+.get(Verify.verifyLearner, function(req, res, next){
     Topics.findById(req.params.id, function(err, topic){
         if (err) {
            console.log(err);
@@ -129,7 +130,7 @@ topicRouter.route('/:id/learningPoints/:lid')
         res.json(topic.learningPoints.id(req.params.lid));
     });
 })
-.put(function(req, res, next){
+.put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Topics.findById(req.params.id, function(err, topic){
         if (err) {
            console.log(err);
@@ -149,7 +150,7 @@ topicRouter.route('/:id/learningPoints/:lid')
         });
     });
 })
-.delete(function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Topics.findById(req.params.id, function(err, topic){
         if (err) {
            console.log(err);

@@ -11,16 +11,22 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/bower_components/textAngular/dist/textAngular.css" />
+    <link href="assets/bower_components/ng-dialog/css/ngDialog.min.css" rel="stylesheet">
+    <link href="assets/bower_components/ng-dialog/css/ngDialog-theme-plain.min.css" rel="stylesheet">
+    <link href="assets/bower_components/ng-dialog/css/ngDialog-theme-default.min.css" rel="stylesheet">
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css styles/font-awesome.css -->
-      <link rel="stylesheet" href="assets/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/bower_components/font-awesome/css/font-awesome.min.css">
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link href="./assets/styles/main.css" rel="stylesheet">
     <link href="./assets/styles/myStyles.css" rel="stylesheet">
     <!-- endbuild -->
-</head>
+    <link rel ="stylesheet" href="./assets/mathquill/mathquill.css">
+    <link rel="stylesheet" href="assets/katex/katex.min.css">
+    <script src="assets/katex/katex.min.js"></script>
+    </head>
 
 <body style="background-color:#E5E8E8;" ng-app="clientApp">
     <!--[if lte IE 8]>
@@ -28,13 +34,12 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-<div class="header">
-    <div class="navbar navbar-inverse navbar-fixed-top bg-faded" role="navigation">
-
+<div class="header" ng-controller="HeaderController">
+   <div>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
-
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -42,26 +47,37 @@
                 </button>
                 <a class="navbar-brand" ui-sref="home">Lucid</a>
             </div>
-
-            <div class="collapse navbar-collapse" id="js-navbar-collapse">
+            <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a ui-sref="home">Home</a></li>
-                    <li><a href="#/about">About</a></li>
-                    <li><a href="#/">Contact</a></li>
+                    <li ng-class="{active: stateis('home')}"><a ui-sref="home">
+                        <span class="glyphicon glyphicon-home"
+                         aria-hidden="true"></span> Home</a></li>
+                    <li ng-class="{active: stateis('aboutus')}"><a ui-sref="aboutus">
+                        <span class="glyphicon glyphicon-info-sign"
+                         aria-hidden="true"></span> About</a></li>
+                     <li ng-class="{active: stateis('contactus')}"><a ui-sref="contactus">
+                     <i class="fa fa-envelope-o"></i> Contact</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-if="!loggedIn"><a ng-click="openLogin()">
+                    <span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    </li>
+                    <li ng-if="loggedIn">
+                    <a>{{email}}</a>
+                    </li>
+                    <li ng-if="loggedIn">
+                    <a ng-click="logOut()">
+                    <span class="glyphicon glyphicon-log-in"></span> Logout</a>
+                    </li>
                 </ul>
             </div>
-
         </div>
-
-    </div>
+    </nav>
+</div> 
 </div>
 
 <div class="container">
-    <div class="row">
-        <div>
-            <div ui-view></div>
-        </div>
-    </div>
+    <div ui-view></div>
 </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -74,13 +90,11 @@
     ga('create', 'UA-XXXXX-X');
     ga('send', 'pageview');
 </script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!-- build:js({.tmp,app}) scripts/vendor.js -->
 <!-- bower:js -->
-<script src="assets/bower_components/jquery/dist/jquery.js"></script>
 <script src="assets/bower_components/angular/angular.js"></script>
 <script src="assets/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="assets/bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="assets/bower_components/angular-resource/angular-resource.js"></script>
 <script src="assets/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="assets/bower_components/rangy/rangy-core.js"></script>
@@ -92,27 +106,38 @@
 <script src="assets/bower_components/textAngular/dist/textAngular.js"></script>
 <script src="assets/bower_components/textAngular/dist/textAngular-sanitize.js"></script>
 <script src="assets/bower_components/textAngular/dist/textAngularSetup.js"></script>
-<script src="assets/bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+<script src="assets/bower_components/ng-dialog/js/ngDialog.min.js"></script>
 <!-- endbower -->
+<script src="assets/mathquill/mathquill.js"></script>
+<script>
+    var MQ = MathQuill.getInterface(2);
+    var problemSpan = document.getElementById('problem');
+    MQ.StaticMath(problemSpan);
+</script>
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="./app.js"></script>
-<script src="./shared/filters.js"></script>
-<script src="./shared/symbolize.js"></script>
-<script src="./shared/moduleFactory.js"></script>
-<script src="./shared/topicFactory.js"></script>
-<script src="./shared/learningPointFactory.js"></script>
-<script src="./components/editModule/ContentCtrl.js"></script>
-<script src="./components/editModule/ViewCtrl.js"></script>
-<script src="./components/newModule/CreateCtrl.js"></script>
-<script src="./components/newModule/learningPointCtrl.js"></script>
-<script src="./components/newModule/ModuleNameCtrl.js"></script>
-<script src="./components/newModule/TopicsCtrl.js"></script>
-<script src="./components/newModule/dataFactory.js"></script>
-<script src="./components/moduleDashboard/ExistingModulesCtrl.js"></script>
+<script src="./components/brainstorm/scripts/learningPointCtrl.js"></script>
+<script src="./components/brainstorm/scripts/ModuleNameCtrl.js"></script>
+<script src="./components/brainstorm/scripts/TopicsCtrl.js"></script>
+<script src="./components/create/scripts/StructureCtrl.js"></script>
+<script src="./components/create/scripts/ContentCtrl.js"></script>
+<script src="./components/dashboard/ExistingModulesCtrl.js"></script>
 <script src="./components/home/HomeCtrl.js"></script>
-<script src="./components/editModule/StructureCtrl.js"></script>
+<script src="./components/organize/CreateCtrl.js"></script>
+<script src="./components/preview/ViewCtrl.js"></script>
+<script src="./shared/factories/authFactory.js"></script>
+<script src="./shared/factories/dataFactory.js"></script>
+<script src="./shared/factories/moduleFactory.js"></script>
+<script src="./shared/factories/topicFactory.js"></script>
+<script src="./shared/factories/learningPointFactory.js"></script>
+<script src="./shared/header/HeadCtrl.js"></script>
+<script src="./shared/login/LoginCtrl.js"></script>
+<script src="./shared/otherScripts/filters.js"></script>
+<script src="./shared/otherScripts/localStorage.js"></script>
+<script src="./shared/otherScripts/symbolize.js"></script>
+<script src="./shared/Signup/SignupCtrl.js"></script>
 <script type="text/javascript" src="http://latex.codecogs.com/editor3.js"></script>
 <!-- endbuild -->
 </body>
