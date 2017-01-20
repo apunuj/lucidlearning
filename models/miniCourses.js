@@ -1,24 +1,23 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Tag = require('./tags');
-var Topic = require('./topics');
+var Module = require('./modules');
 
-var moduleSchema = new Schema({
+var miniCourseSchema = new Schema({
     name: {
         type: String,
         required: true
     },
-    tags: [{
+    tags:[{
         type: Schema.Types.ObjectId,
         ref: Tag
     }],
-    topics: [{
+    modules: [{
         type: Schema.Types.ObjectId,
-        ref: Topic
+        ref: Module
     }]
 }, {timestamps: true});
 
-var Modules = mongoose.model('Module', moduleSchema);
+var MiniCourses = mongoose.model('MiniCourse', miniCourseSchema);
 
-module.exports = Modules;
+module.exports = MiniCourses;

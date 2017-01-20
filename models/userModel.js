@@ -28,7 +28,7 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     }
-});
+}, {timestamps: true});
 
 UserSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
 
