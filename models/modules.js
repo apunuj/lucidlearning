@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Tag = require('./tags');
-var Topic = require('./topics');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var moduleSchema = new Schema({
     name: {
@@ -11,14 +10,16 @@ var moduleSchema = new Schema({
     },
     tags: [{
         type: Schema.Types.ObjectId,
-        ref: Tag
+        ref: 'Tag'
     }],
     topics: [{
         type: Schema.Types.ObjectId,
-        ref: Topic
+        ref: 'Topic'
     }]
 }, {timestamps: true});
 
+moduleSchema.plugin(deepPopulate);
 var Modules = mongoose.model('Module', moduleSchema);
+
 
 module.exports = Modules;

@@ -1,9 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Tag = require('./tags');
-var Module = require('./modules');
-
 var brainStormingSessionSchema = new Schema({
     name: {
         type: String,
@@ -11,11 +8,11 @@ var brainStormingSessionSchema = new Schema({
     },
     tag: [{
         type: Schema.Types.ObjectId,
-        ref: Tag
+        ref: 'Tag'
     }],
     modules: [{
         type: Schema.Types.ObjectId,
-        ref: Module
+        ref: 'Module'
     }],
     brainStormingPoints: [{type: String}]
 }, {timestamps: true});

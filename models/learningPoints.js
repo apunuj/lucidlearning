@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Tag = require('./tags');
-
 var learningPointSchema = new Schema({
     name: {
         type: String,
@@ -10,7 +8,7 @@ var learningPointSchema = new Schema({
     },
     tags: [{
         type: Schema.Types.ObjectId,
-        ref: Tag
+        ref: 'Tag'
     }],
     content: {
         type: String

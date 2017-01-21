@@ -1,12 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Module = require('./modules');
-
 var moduleCtrlPanelSchema = new Schema({
     module: {
         type:Schema.Types.ObjectId,
-        ref: Module
+        ref: 'Module'
     },
     completed: {
         type: Boolean,
@@ -21,6 +19,7 @@ var moduleCtrlPanelSchema = new Schema({
         default: false
     }
 }, {timestamps: true});
+
  var ModuleCtrlPanels = mongoose.model('ModuleCtrlPanel', moduleCtrlPanelSchema);
 
  module.exports = ModuleCtrlPanels;

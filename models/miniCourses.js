@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Module = require('./modules');
-
 var miniCourseSchema = new Schema({
     name: {
         type: String,
@@ -10,11 +8,11 @@ var miniCourseSchema = new Schema({
     },
     tags:[{
         type: Schema.Types.ObjectId,
-        ref: Tag
+        ref: 'Tag'
     }],
     modules: [{
         type: Schema.Types.ObjectId,
-        ref: Module
+        ref: 'Module'
     }]
 }, {timestamps: true});
 

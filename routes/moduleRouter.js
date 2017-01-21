@@ -1,29 +1,84 @@
 var express = require('express');
 var moduleRouter = express.Router();
 
+var async = require('async');
+
 var Modules = require('../models/modules');
+var Topics = require('../models/topics');
+var LearningPoints = require('../models/learningPoints');
 
 var Verify = require('./verify');
 
 moduleRouter.route('/')
 .get(Verify.verifyLearner, function(req, res, next){
-    Modules.find(req.query, function(err, modules) {
+    Modules.find(req.query).populate({
+        path: 'topics',
+    }).exec(function(err, modules){
         if (err) {
-            console.log(err);
             next(err);
+        } else {
+            async.eachSeries(modules, function(module, cb){
+                async.eachSeries(module.topics, function(topic, callback){
+                    LearningPoints.populate(topic, {'path':'learningPoints'}, function(err, topic){
+                        if (err) {
+                            next(err);
+                        }
+                        callback();
+                    });
+                }, function(err){
+                    cb();
+                });
+                }, function(err){
+                    res.json(modules);
+            });
         }
-        res.json(modules);
     });
 })
 .post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.create(req.body, function(err, module){
+    Modules.create({name: req.body.name, topics: []}, function(err, module){
         if (err) {
             console.log(err);
             next(err);
         }
         else {
-            console.log("module created");
-            res.json(module);
+            console.log("initial version of module created");
+        
+            async.eachSeries(req.body.topics, function(topic, outcb) {
+                Topics.create({name: topic.name, learningPoints: []}, function(err, newTopic){
+                    module.topics.push(newTopic._id);
+                    console.log("initial version of topic created");
+                    async.eachSeries(topic.learningPoints, function(learningPoint, cb) {
+                        LearningPoints.create(learningPoint, function(err, newLearningPoint) {
+                            newTopic.learningPoints.push(newLearningPoint._id);
+                            console.log("learning Point Created");
+                            cb();
+                        });
+                    }, function (err) {
+                        if (err) {
+                            next(err);
+                        }
+                        newTopic.save(function(err, newTopic){
+                            console.log(newTopic);
+                            
+                        });
+                        outcb();
+                    });  
+                });
+            }, function(err){
+                if (err) {
+                    next(err);
+                }
+                module.save(function(err, module){
+                    if (err){
+                        console.log(err);
+                        next(err);
+                    }
+                    else {
+                        console.log("module created");
+                        res.json(module);
+                    }
+                });
+            });     
         }
     });
 })
@@ -39,12 +94,12 @@ moduleRouter.route('/')
 
 moduleRouter.route('/:id')
 .get(Verify.verifyLearner, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
+    Modules.findById(req.params.id).deepPopulate('topics.learningPoints').exec(function(err, module){
         if (err) {
-           console.log(err);
-           next(err);
-       } 
-        res.json(module);
+            next(err);
+        } else {
+            res.json(module);
+        }
     });
 })
 .put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {

@@ -1,9 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Tag = require('./tags');
-var LearningPoint = require('./learningPoints');
-
 var topicSchema = new Schema({
     name: {
         type: String,
@@ -11,7 +8,7 @@ var topicSchema = new Schema({
     },
     tags: [{
         type: Schema.Types.ObjectId,
-        ref: Tag
+        ref: 'Tag'
     }],
     learningPoints: [{
         type: Schema.Types.ObjectId,
