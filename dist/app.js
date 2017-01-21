@@ -63,6 +63,11 @@ angular.module('clientApp', [
         controller: 'ContentCtrl'
     })
 
+    .state('learning', {
+        url: '/mini-courses',
+        templateUrl: 'components/learner/learnerMenu.html'
+    })
+
     .state('view', {
         url: '/view/:id',
         templateUrl: 'components/preview/contentView.html',
