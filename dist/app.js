@@ -1,11 +1,16 @@
 'use strict';
 
+//http://localhost:3000/
+//http://ec2-54-172-201-85.compute-1.amazonaws.com:3000/
+
 angular.module('clientApp', [
     'ngDialog',
     'ngResource',
     'textAngular',
     'ui.router'
   ])
+
+.constant('baseUrl', 'http://ec2-54-172-201-85.compute-1.amazonaws.com:3000/')
 
 .config(function($provide){
     $provide.decorator('taOptions', ['$delegate', function(taOptions){
@@ -61,6 +66,11 @@ angular.module('clientApp', [
         url: '/content/:id',
         templateUrl: 'components/create/views/contentEdit.html',
         controller: 'ContentCtrl'
+    })
+
+    .state('learning', {
+        url: '/mini-courses',
+        templateUrl: 'components/learner/learnerMenu.html'
     })
 
     .state('view', {

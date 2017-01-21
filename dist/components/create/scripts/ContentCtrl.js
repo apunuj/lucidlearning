@@ -4,9 +4,6 @@ angular.module('clientApp')
 
 .controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', function($scope, $state, $stateParams, moduleFactory, learningPointFactory) {
    
-
-
-   
    $scope.equation = "";
     $scope.module = moduleFactory.get({id: $stateParams.id})
                 .$promise.then(function(response){
