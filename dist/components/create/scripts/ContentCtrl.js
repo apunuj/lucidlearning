@@ -43,30 +43,7 @@ angular.module('clientApp')
     
     //for updating all the content together
     $scope.submitContent = function() {
-        $scope.recursiveUpdate = function(tindex, lindex) {
-            learningPointFactory.update({
-                id: $stateParams.id,
-                tid: $scope.module.topics[tindex]._id,
-                lid: $scope.module.topics[tindex].learningPoints[lindex]._id
-            }, $scope.module.topics[tindex].learningPoints[lindex])
-            .$promise.then(function(updatedLearningPoint){
-                $scope.module.topics[tindex].learningPoints[lindex]._id = updatedLearningPoint._id;
-                lindex++;
-                if(lindex < $scope.module.topics[tindex].learningPoints.length) {
-                    $scope.recursiveUpdate(tindex, lindex);
-                }
-                lindex = 0;
-                tindex++;
-                if(tindex < $scope.module.topics.leangth) {
-                    $scope.recursiveUpdate(tindex, lindex);
-                }
-                $state.go('view', {id:$stateParams.id});
-            },
-            function(updatedLearningPoint){
-                console.log(updatedLearningPoint.status);
-            });
-        };
-        $scope.recursiveUpdate(0,0);
+        $state.go('view', {id:$stateParams.id});
     };
     
 }]);
