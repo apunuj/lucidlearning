@@ -6,7 +6,7 @@ angular.module('clientApp')
    
 
 
-   $scope.aws = katex.renderToString("\(ax^2 + bx + c = 0\)", {displayMode: true});
+   
    $scope.equation = "";
     $scope.module = moduleFactory.get({id: $stateParams.id})
                 .$promise.then(function(response){
@@ -28,7 +28,7 @@ angular.module('clientApp')
     $scope.updateContent = function(tindex, lindex) {
         
         console.log($scope.equation);
-        $scope.module.topics[tindex].learningPoints[lindex].content = $scope.module.topics[tindex].learningPoints[lindex].content + $scope.aws;
+        $scope.module.topics[tindex].learningPoints[lindex].content = $scope.module.topics[tindex].learningPoints[lindex].content + $scope.equation;
         $scope.module.topics[tindex].learningPoints[lindex].content = symbolize($scope.module.topics[tindex].learningPoints[lindex].content);
         learningPointFactory.update({
             id: $stateParams.id,
