@@ -1,11 +1,16 @@
 'use strict';
 
+//http://localhost:3000/
+//http://ec2-54-172-201-85.compute-1.amazonaws.com:3000/
+
 angular.module('clientApp', [
     'ngDialog',
     'ngResource',
     'textAngular',
     'ui.router'
   ])
+
+.constant('baseUrl', 'http://localhost:3000/')
 
 .config(function($provide){
     $provide.decorator('taOptions', ['$delegate', function(taOptions){

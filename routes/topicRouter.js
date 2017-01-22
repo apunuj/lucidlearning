@@ -1,12 +1,19 @@
 var express = require('express');
 var topicRouter = express.Router();
 
+var async = require('async');
+
 var Topics = require('../models/topics');
+var LearningPoints = require('../models/learningPoints');
+
 var Verify = require('./verify');
 
 topicRouter.route('/')
 .get(Verify.verifyLearner, function(req, res, next){
-    Topics.find({}, function(err, topics) {
+    Topics.find(req.query).populate({
+        path: 'learningPoints',
+        model: 'LearningPoint'
+    }).exec(function(err, topics) {
         if (err) {
             console.log(err);
             next(err);

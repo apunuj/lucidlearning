@@ -2,8 +2,6 @@
 
 angular.module('clientApp')
 
-.constant('baseUrl', 'http://localhost:3000/')
-
 .factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope', '$window', 'baseUrl', 'ngDialog', function($resource, $http, $localStorage, $rootScope, $window, baseUrl, ngDialog){
     
     var authFac = {};
