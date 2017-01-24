@@ -13,6 +13,10 @@ var miniCourseSchema = new Schema({
     modules: [{
         type: Schema.Types.ObjectId,
         ref: 'Module'
+    }],
+    createdBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }]
 }, {timestamps: true});
 

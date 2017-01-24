@@ -12,7 +12,11 @@ var learningPointSchema = new Schema({
     }],
     content: {
         type: String
-    }
+    },
+    createdBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 }, {timestamps: true});
 
 var LearningPoints = mongoose.model('LearningPoint', learningPointSchema);

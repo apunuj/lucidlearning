@@ -14,7 +14,12 @@ var brainStormingSessionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Module'
     }],
-    brainStormingPoints: [{type: String}]
+    brainStormingPointsComplete: [{type: String}],
+    brainStormingPointsIncomplete: [{type:String}],
+    createdBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 }, {timestamps: true});
 
 var BrainStormingSessions = mongoose.model('BrainStormingSession', brainStormingSessionSchema);

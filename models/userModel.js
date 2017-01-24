@@ -12,6 +12,10 @@ var UserSchema = new Schema({
     password: {
         type: String
     },
+    friends: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     admin: {
         type: Boolean,
         default: false

@@ -129,8 +129,12 @@ moduleRouter.route('/:id')
 moduleRouter.route('/:id/topics')
 .get(Verify.verifyLearner, function(req, res, next){
     Modules.findById(req.params.id).populate({
-        path: 'learningPoints',
-        model: 'LearningPoint'
+        path: 'topics',
+        model: 'Topic',
+        populate: {
+            path: 'learningPoints',
+            model: 'LearningPoint'
+        }
     }).exec(function(err, module){
         if (err){
             next(err);
@@ -167,7 +171,7 @@ moduleRouter.route('/:id/topics')
            next(err);
        } 
        async.eachSeries(module.topics, function(topic, cb){
-           Topics.findByIdAndRemove(topic._id, function(err){
+           Topics.findByIdAndRemove(topic._id, function(err, resp){
                if (err){
                    next(err);
                }
@@ -181,6 +185,7 @@ moduleRouter.route('/:id/topics')
            module.topics = [];
            module.save(function(err, module){
                console.log("Updated module:"+module);
+               res.json(resp)
            });
         });
     });
@@ -212,7 +217,7 @@ moduleRouter.route('/:id/topics/:tid')
     });
 })
 .delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
-    Topics.findByIdAndRemove(req.params.tid, function(err){
+    Topics.findByIdAndRemove(req.params.tid, function(err, resp){
         if (err){
             next(err);
         }
@@ -222,6 +227,7 @@ moduleRouter.route('/:id/topics/:tid')
                 next(err);
             }
             module.topics.splice(module.topics.indexOf(req.params.tid),1);
+            res.json(resp);
         });
     });
 });
@@ -268,7 +274,7 @@ moduleRouter.route('/:id/topics/:tid/learningPoints')
            next(err);
        } 
        async.eachSeries(topic.learningPoints, function(learningPoint, cb){
-           LearningPoints.findByIdAndRemove(learningPoint._id, function(err){
+           LearningPoints.findByIdAndRemove(learningPoint._id, function(err, resp){
                if (err){
                    next(err);
                }
@@ -282,6 +288,7 @@ moduleRouter.route('/:id/topics/:tid/learningPoints')
            topic.learningPoints = [];
            topic.save(function(err, topic){
                console.log("Updated topic:"+topic);
+               res.json(resp);
            });
         });
     });
@@ -311,7 +318,7 @@ moduleRouter.route('/:id/topics/:tid/learningPoints/:lid')
     });
 })
 .delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
-    LearningPoints.findByIdAndRemove(req.params.lid, function(err){
+    LearningPoints.findByIdAndRemove(req.params.lid, function(err, resp){
         if (err){
             next(err);
         }
@@ -321,6 +328,9 @@ moduleRouter.route('/:id/topics/:tid/learningPoints/:lid')
                 next(err);
             }
             topic.learningPoints.splice(topic.learningPoints.indexOf(req.params.lid),1);
+            topic.save(function(err, savedTopic){
+                res.json(resp);
+            })
         });
     });
 });

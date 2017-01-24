@@ -13,6 +13,10 @@ var topicSchema = new Schema({
     learningPoints: [{
         type: Schema.Types.ObjectId,
         ref: 'LearningPoint'
+    }],
+    createdBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     }]
 }, {timestamps: true});
 
