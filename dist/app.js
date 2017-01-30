@@ -26,53 +26,125 @@ angular.module('clientApp', [
 .config(function($stateProvider, $urlRouterProvider){
     $stateProvider
 
-    .state('home', {
+    .state ('home', {
+        url: '',
+        abstract: 'true',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/home/home-layout.html'
+            }
+        }
+    })
+
+    .state('home.intro', {
         url: '/',
-        templateUrl: 'components/home/home.html',
-        controller: 'HomeCtrl'
+        views: {
+            'learnerIntro': {
+                templateUrl: 'components/home/learnerIntro/learnerIntro.html'
+                
+            },
+            'teacherIntro': {
+                templateUrl: 'components/home/teacherIntro/teacherIntro.html'
+                
+            }
+        }
+
     })
 
-    .state('existing', {
-        url: '/existingModules',
-        templateUrl: 'components/dashboard/existingModules.html',
-        controller: 'ExistingModulesCtrl'
-    })
-
-    .state('newModule', {
-        url: '/newModule',
-        templateUrl: 'components/brainstorm/views/moduleName.html',
-        controller: 'ModuleNameCtrl'
-    })
-
-    .state('topics', {
-        url: '/topics',
-        templateUrl: 'components/brainstorm/views/topicsList.html',
-        controller: 'TopicsCtrl'
-    })
-
-    .state('learningPoints', {
-        url: '/learningPoints',
-        templateUrl: 'components/brainstorm/views/learningPointsList.html',
-        controller: 'learningPointCtrl'
+    .state('teacher-dashboard', {
+        url: '/teacher-dashboard',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/teacher/dashboard/teacherDashboard.html',
+                controller: 'TeacherDashboardCtrl'
+            }
+        }
     })
 
     .state('createModule', {
         url: '/createModule/:id',
-        templateUrl: 'components/organize/createModule.html',
-        controller: 'CreateCtrl'
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/teacher/makeModule/createModule.html',
+                controller: 'CreateCtrl'  
+            }
+        }
     })
 
-    .state('content', {
-        url: '/content/:id',
-        templateUrl: 'components/create/views/contentEdit.html',
-        controller: 'ContentCtrl'
+     .state('writeContent', {
+        url: '/writeContent/:id',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/teacher/makeModule/contentEdit.html',
+                controller: 'ContentCtrl'
+            }
+        }
     })
 
-    .state('view', {
-        url: '/view/:id',
-        templateUrl: 'components/preview/contentView.html',
-        controller: 'ViewCtrl'
-    });
+    .state('existingModules', {
+        url: '/existingModules',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/teacher/dashboard/existingModules.html',
+                controller: 'ExistingModulesCtrl'
+            }
+        }
+    })
+
+    .state('makeCourse', {
+        url: '/make-course/:id',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/teacher/makeCourse/makeCourse.html',
+                controller: 'MakeCourseCtrl'
+            }
+        }
+    })
+
+    .state('learner', {
+        url: 'learner',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/learner/learner-layout.html'
+            }
+        }
+    })
+
+    .state('learner.miniCourses', {
+        url: '/miniCourses',
+        views: {
+
+        }
+    })
+
 
     $urlRouterProvider.otherwise('/');
 

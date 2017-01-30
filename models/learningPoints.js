@@ -3,8 +3,7 @@ var Schema = mongoose.Schema;
 
 var learningPointSchema = new Schema({
     name: {
-        type: String,
-        required: true
+        type: String
     },
     tags: [{
         type: Schema.Types.ObjectId,

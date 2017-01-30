@@ -1,0 +1,165 @@
+<div class="container">
+    <div class="row">
+
+        <div style ="background-color:#FDFEFE" class="col-xs-12 col-sm-8"> 
+            
+            <div class="row">
+                <div class="btn-info" style="height:100px; text-align: center; vertical-align: middle;">
+                    <h3>Organize your thoughts into topics and learning points here:</h3>
+                </div>  
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" ng-if="!moduleNameSet">
+                    <form class="form-inline" ng-submit="setModuleName()">
+                        <input  style="text-align:center;" type="text" ng-model="module.name" placeholder="Enter Module Name Here" class="col-xs-12 input-lg">
+                    </form>
+                    <hr>
+                </div>
+                <div class="col-xs-12" ng-if="moduleNameSet">
+                    <h3 style="text-align: center;" class="module-name">{{module.name | capitalize:true}}&nbsp;<small><a ng-click="editModuleName()"><span><i class="fa fa-edit"></i></span></a></small>&nbsp;<button class="btn btn-xs btn-default" ui-sref="writeContent({id:module._id})" style="color:#337ab7; vertical-align: center;"> Write Content </button></h3>
+                    <hr>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" ng-repeat="topicObject in module.topics track by $index">
+                    <div class="button-group pull-right">
+                        <button class="btn btn-xs btn-success pull-right" ng-click="removeTopic($index)">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <button class="btn btn-xs btn-success pull-right" ng-click="moveTopicUp($index)">
+                            <i class="fa fa-arrow-up"></i>
+                        </button>
+                        <button class="btn btn-xs btn-success pull-right" ng-click="moveTopicDown($index)">
+                            <i class="fa fa-arrow-down"></i>
+                        </button>
+                        <button class="btn btn-xs btn-success pull-right" ng-click="editTopic($index)">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <div ng-if="!editTopicToggle[$index]">
+                            <h4 class="topic-name"><button class="btn btn-xs btn-default" ng-click="toggleShowLearningPoint($index)"><i ng-class="{'fa fa-caret-right':!showLearningPoint[$index],'fa fa-caret-down':showLearningPoint[$index]}"></i></button>&nbsp;{{topicObject.name | capitalize:true}}</h4>
+                        </div>
+                        <div ng-if="editTopicToggle[$index]">
+                            <form class="form" ng-submit="submitNewTopicName($index)">
+                                <input type="text" class="input-md col-xs-8" ng-model="topicObject.name"> 
+                            </form>
+                            <p style="padding:5px;"></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div ng-if="showLearningPoint[$index]">
+                        <ul>
+                            <li ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
+                                <div class="button-group pull-right">
+                                    <button class="btn btn-xs btn-default pull-right" ng-click="removeLearningPoint($parent.$index, $index)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-default pull-right" ng-click="moveLearningPointUp($parent.$index, $index)">
+                                        <i class="fa fa-arrow-up"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-default pull-right" ng-click="moveLearningPointDown($parent.$index, $index)">
+                                        <i class="fa fa-arrow-down"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-default pull-right" ng-click="editLearningPoint($parent.$index, $index)">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </div>
+                                 <div>
+                                    <div ng-if="!editLearningPointToggle[$parent.$index][$index]">
+                                        <p>{{learningPointObject.name | capitalize}}</p>
+                                    </div>
+                                    <div ng-if="editLearningPointToggle[$parent.$index][$index]">
+                                        <form  style="padding-top:0px; padding-bottom: 20px;" class="form" ng-submit="submitNewLearningPointName($parent.$index, $index)">
+                                            <input type="text" class="input-md col-xs-8" ng-model="learningPointObject.name"> 
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr>
+                            </li>
+                            <form style="box-sizing:border-box;" class="form-inline" ng-submit="addLearningPoint($index)" name="learningPointForm">
+                                <input type="text" class="input-md col-xs-8" placeholder="Enter New Learning Point" ng-model="topicObject.newLearningPointObject.name">
+                            </form>
+                            <hr>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                   <p class="topic-name"> <button ng-click="toggleTopicForm()" class="btn btn-xs btn-default"><i class="fa fa-plus"></i></button>&nbsp;New Topic</p>
+                </div>  
+                <div class="col-xs-12">         
+                    <form class="form" ng-submit="addTopic()" name="topicForm">
+                        <p ng-if="showTopicForm">
+                        <input type="text" class="input-md col-xs-8" placeholder="Enter New Topic" ng-model="module.newTopicObject.name">
+                        </p>
+                    </form>
+                </div>
+            </div>
+          
+            <div class="row">
+                <p style="padding: 10px;"></p>
+                <div class="col-xs-12 col-sm-6">
+                    <button type="button" ui-sref="home" class="btn btn-default center-block" style="color: #337ab7"> Make another module structure</button>
+                    <p style="padding:2px;"></p>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <button type="button" ui-sref="writeContent({id: module._id})" class="btn btn-default center-block" style="color: #337ab7"> Add Content to this module</button>
+                </div>
+            </div>  
+
+        </div>
+
+
+        <div style ="background-color:#FDFEFE" class="hidden-xs col-sm-3 col-sm-offset-7 affix">
+            
+                <div class="row">    
+                    <div class="btn-info" style="height:50px; text-align: center; vertical-align: text-middle;">
+                        <h4>Brainstorm and jot down your ideas here:</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div ng-if="openPoints.length > 0">
+                            <p><strong>Open Points:</strong></p>
+                            <ul class="list-unstyled">
+                                <li ng-repeat="openPoint in openPoints">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-model="openPoint.completed" ng-click="closeOpenPoint($index)"> {{openPoint.name}}
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div ng-if="closedPoints.length > 0">
+                            <p><strong>Closed Points:</strong></p>
+                            <ul class="list-unstyled">
+                                <li ng-repeat="closedPoint in closedPoints">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-model="closedPoint.completed" ng-click="openClosedPoint($index)"> {{closedPoint.name}}
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <form ng-submit="addBrainStormingPoint()">
+                            <input type="text" ng-model="brainStormingSession.newPointObject.name" placeholder="Enter new brainstorming point here" class="input-md col-xs-12">
+                        </form>
+                    </div>     
+                </div>
+
+            </div>
+
+            
+        
+
+    </div>
+</div>

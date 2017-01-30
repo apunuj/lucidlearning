@@ -51,7 +51,17 @@ router.post('/login', function(req, res, next){
             res.status(200).json({
                 status: 'Login successful!',
                 success: true,
-                token: token
+                token: token,
+                user: {
+                    _id: user._id,
+                    email: user.email,
+                    friends: user.friends,
+                    userName: user.userName,
+                    learner: user.learner,
+                    teacher: user.teacher,
+                    moderator: user.moderator,
+                    admin: user.admin
+                }
             });
         });
     })(req, res, next);

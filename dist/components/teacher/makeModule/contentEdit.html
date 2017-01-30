@@ -1,0 +1,107 @@
+<div class="container" data-spy="scroll" data-target="moduleIndex" data-offset="100">
+    <div class="row">
+
+        <div style ="background-color:#FDFEFE" class="col-xs-12 col-sm-8">
+            <div class="row">
+                <div class="btn-info" style="height:100px; text-align: center; vertical-align: middle;">
+                    <h3>Simply focus on articulating your ideas, one learning point at a time:</h3>
+                </div>           
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="module-name" style="text-align: center;">{{module.name | capitalize:true}}&nbsp;<button class="btn btn-xs btn-default" ui-sref="createModule({id:module._id})" style="color: #337ab7; vertical-align: center;"> Edit Structure </button></h3>
+                    <hr>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div ng-repeat="topicObject in module.topics track by $index">
+                        <h4 class="topic-name" id="topic-{{$index}}">{{topicObject.name | capitalize:true}}</h4>
+                        <div ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
+                            <button class="btn btn-default pull-right" ng-click="updateContent($parent.$index, $index)">update</button>
+                            <h4>{{learningPointObject.name | capitalize}}</h4>
+                            <div text-angular ng-model="learningPointObject.content"></div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <p style="padding: 5px;"></p>
+                    <button type="button" ng-click="submitContent()" class="btn btn-info btn-sm center-block">Save And Continue</button>
+                    <p style="padding: 5px;"></p>
+                </div>
+            </div>                   
+        </div>
+
+
+        <div class="hidden-xs col-sm-3 col-sm-offset-7 affix">
+
+            <div class="row" style="background-color:#FDFEFE;">
+                <div class="btn-info" style="height:50px; text-align:center; vertical-align:middle; position:relative;">
+                    <div id="hello"></div>
+                    <h4>Get embeddable links for equations:</h4>
+                </div>
+                <div class="col-xs-12">
+                    <div id="equation-editor">
+                        <a type ="button" class="btn btn-xs btn-default" href="javascript:OpenLatexEditor('testbox','html','')">Click here</a>
+                        <input type="text" id="testbox" ng-model="equation" rows="1" cols="100">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <p style="padding:10px;"></p>
+            </div>
+
+            <div class="row" style="background-color:#FDFEFE">          
+                <div class="btn-info" style="height:50px; text-align: center; vertical-align: text-middle;">
+                    <h4>Brainstorming points:</h4>
+                </div>
+                    
+                <div class="col-xs-12">
+                    <div ng-if="openPoints.length > 0">
+                        <p><strong>Open Points:</strong></p>
+                        <ul class="list-unstyled">
+                            <li ng-repeat="openPoint in openPoints">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="openPoint.completed" ng-click="closeOpenPoint($index)"> {{openPoint.name}}
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div ng-if="closedPoints.length > 0">
+                        <p><strong>Closed Points:</strong></p>
+                        <ul class="list-unstyled">
+                            <li ng-repeat="closedPoint in closedPoints">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="closedPoint.completed" ng-click="openClosedPoint($index)"> {{closedPoint.name}}
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <form ng-submit="addBrainStormingPoint()">
+                        <input type="text" ng-model="brainStormingSession.newPointObject.name" placeholder="Enter new brainstorming point here" class="input-md col-xs-12">
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+ 

@@ -100,9 +100,7 @@ moduleRouter.route('/:id')
     });
 })
 .put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
-    /**only for change in topic name (hence, req.body={name: "new Name"}, 
-     * for other updates like adding/deleting the topics
-     * we will hit routes like modules/:id/topics etc
+    /**only for change in module name or reassigning the entire topic array ids for reordering
     */
     Modules.findByIdAndUpdate(req.params.id, {
         $set: req.body

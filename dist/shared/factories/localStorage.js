@@ -21,3 +21,6 @@ angular.module('clientApp')
         }
     }
 }]);
+
+//Usage for obtaining logged in user's details:
+//var userDetails = $localStorage.getObject('Token', '{}');

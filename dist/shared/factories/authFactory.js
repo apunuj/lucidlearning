@@ -9,7 +9,13 @@ angular.module('clientApp')
     var isAuthenticated = false;
     var email = '';
     var authToken = undefined;
-    
+    var userId = '';
+    var friends = [];
+    var userName = '';
+    var learner = false;
+    var teacher = false;
+    var moderator = false;
+    var admin =false;
 
   function loadUserCredentials() {
     var credentials = $localStorage.getObject(TOKEN_KEY,'{}');
@@ -27,6 +33,13 @@ angular.module('clientApp')
     isAuthenticated = true;
     email = credentials.email;
     authToken = credentials.token;
+    userId = credentials._id;
+    friends = credentials.friends;
+    userName = credentials.userName;
+    learner = credentials.learner;
+    teacher = credentials.teacher;
+    moderator = credentials.moderator;
+    admin = credentials.admin;
  
     // Set the token as header for your requests!
     $http.defaults.headers.common['x-access-token'] = authToken;
@@ -35,6 +48,14 @@ angular.module('clientApp')
   function destroyUserCredentials() {
     authToken = undefined;
     email = '';
+    userId = '';
+    friends = '';
+    userName = '';
+    learner = false;
+    teacher = false;
+    moderator = false;
+    admin = false;
+
     isAuthenticated = false;
     $http.defaults.headers.common['x-access-token'] = authToken;
     $localStorage.remove(TOKEN_KEY);
@@ -45,7 +66,8 @@ angular.module('clientApp')
         $resource(baseUrl + "users/login")
         .save(loginData,
            function(response) {
-              storeUserCredentials({email:loginData.email, token: response.token});
+             response.user.token = response.token;
+              storeUserCredentials(response.user);
               $rootScope.$broadcast('login:Successful');
            },
            function(response){
@@ -107,6 +129,21 @@ angular.module('clientApp')
     
     authFac.getEmail = function() {
         return email;  
+    };
+
+    authFac.getUserDetails = function() {
+        var userDetails = {
+                    _id: userId,
+                    email: email,
+                    friends: friends,
+                    userName: userName,
+                    learner: learner,
+                    teacher: teacher,
+                    moderator: moderator,
+                    admin: admin
+        };
+
+        return userDetails;
     };
 
     loadUserCredentials();

@@ -25,7 +25,7 @@ miniCourseRouter.route('/')
         if (err){
             next (err);
         }
-        res.json('miniCourse');
+        res.json(miniCourse);
     });
 })
 .delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
@@ -82,15 +82,16 @@ miniCourseRouter.route('/:id/modules')
     });
 })
 .post(Verify.verifyLearner, Verify.verifyTeacher, function (req, res, next){
-    Modules.create(req.body, function(err, module){
-        MiniCourses.findById(req.params.id, function (err, miniCourse){
-            miniCourse.modules.push(module._id);
-            miniCourse.save(function(err, savedMiniCourse){
-                if (err) {
-                    next (err);
-                }
-                res.json(module);
-            });
+    MiniCourses.findById(req.params.id, function(err, miniCourse){
+        if (err) {
+            next (err);
+        }
+        miniCourse.modules.push(req.body);
+        miniCourse.save(function(err, savedMiniCourse){
+            if (err) {
+             next (err);
+            }
+            res.json(savedMiniCourse);
         });
     });
 });
@@ -104,3 +105,5 @@ miniCourseRouter.route('/:id/modules/:mid')
         });
     });
 });
+
+module.exports = miniCourseRouter;

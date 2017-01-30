@@ -2,7 +2,7 @@
 
 angular.module('clientApp')
 
-.controller('HeaderController', ['$scope', '$state', '$rootScope', 'ngDialog', 'AuthFactory', function ($scope, $state, $rootScope, ngDialog, AuthFactory) {
+.controller('NavBarCtrl', ['$scope', '$state', '$rootScope', 'ngDialog', 'AuthFactory', function ($scope, $state, $rootScope, ngDialog, AuthFactory) {
 
     $scope.loggedIn = false;
     $scope.email = '';
@@ -13,7 +13,7 @@ angular.module('clientApp')
     }
         
     $scope.openLogin = function () {
-        ngDialog.open({ template: 'shared/login/login.html', scope: $scope, className: 'ngdialog-theme-default', controller:"LoginController" });
+        ngDialog.open({ template: 'shared/login/login.html', scope: $scope, className: 'ngdialog-theme-default', controller:"LoginCtrl" });
     };
     
     $scope.logOut = function() {
