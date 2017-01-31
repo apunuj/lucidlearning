@@ -125,21 +125,36 @@ angular.module('clientApp', [
         }
     })
 
-    .state('learner', {
-        url: 'learner',
+    .state('learner-dashboard', {
+        url: '/learner-dashboard',
         views: {
             'navbar': {
                 templateUrl: 'shared/navbar/navBarView.html',
                 controller: 'NavBarCtrl'
             },
             'body': {
-                templateUrl: 'components/learner/learner-layout.html'
+                templateUrl: 'components/learner/dashboard/learnerDashboard.html',
+                controller: 'LearnerDashboardCtrl'
             }
         }
     })
 
-    .state('learner.miniCourses', {
-        url: '/miniCourses',
+    .state('viewModule', {
+        url: '/viewModule/:id',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/contentView/contentView.html',
+                controller: 'ViewCtrl'
+            }
+        }
+    })
+
+    .state('previewCourse', {
+        url: '/previewCourses',
         views: {
 
         }

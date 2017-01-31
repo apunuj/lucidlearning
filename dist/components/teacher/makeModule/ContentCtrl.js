@@ -3,37 +3,36 @@
 angular.module('clientApp')
 
 .controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory) {
-   var html = katex.renderToString("c = \\pm\\sqrt{a^2 + b^2}");
-   document.getElementById("hello").innerHTML = html;
     $scope.module = moduleFactory.get({id: $stateParams.id})
-                    .$promise.then(function(response){
-                    $scope.module = response;
+    .$promise.then(function(response){
+        $scope.module = response;
 
-                    //initializing the brainstorming session
-                    $scope.brainStormingSession = brainStormingSessionFactory.query({moduleId:response._id})
-                    .$promise.then(function(response){
-                        $scope.brainStormingSession = response[0];
-                        $scope.brainStormingSession.newPointObject = {
-                            name: '',
-                            completed: false
-                        };
-                        $scope.openPoints = [];
-                        $scope.closedPoints = [];
-                        for (var index = 0; index < $scope.brainStormingSession.points.length; index++) {
-                            $scope.brainStormingSession.points[index].bindex = index;
-                            if ($scope.brainStormingSession.points[index].completed === true) {
-                                $scope.closedPoints.push($scope.brainStormingSession.points[index]);
-                            } else {
-                                $scope.openPoints.push($scope.brainStormingSession.points[index]);
-                            }
-                        }
-                    }, function(response){
-                        console.log(response.status);
-                    });
-                },
-                function(response){
-                    console.log(response.status);
-                });
+        //initializing the brainstorming session
+        $scope.brainStormingSession = brainStormingSessionFactory.query({moduleId:response._id})
+        .$promise.then(function(response){
+            $scope.brainStormingSession = response[0];
+            $scope.brainStormingSession.newPointObject = {
+                name: '',
+                completed: false
+            };
+            $scope.openPoints = [];
+            $scope.closedPoints = [];
+            for (var index = 0; index < $scope.brainStormingSession.points.length; index++) {
+                $scope.brainStormingSession.points[index].bindex = index;
+                if ($scope.brainStormingSession.points[index].completed === true) {
+                    $scope.closedPoints.push($scope.brainStormingSession.points[index]);
+                } else {
+                    $scope.openPoints.push($scope.brainStormingSession.points[index]);
+                }
+            }
+            
+        }, function(response){
+            console.log(response.status);
+        });
+    },
+    function(response){
+        console.log(response.status);
+    });
 
     //function for updating symbols used in the editors
     var symbolize = function(str) {
@@ -64,30 +63,7 @@ angular.module('clientApp')
     
     //for updating all the content together
     $scope.submitContent = function() {
-        $scope.recursiveUpdate = function(tindex, lindex) {
-            learningPointFactory.update({
-                id: $stateParams.id,
-                tid: $scope.module.topics[tindex]._id,
-                lid: $scope.module.topics[tindex].learningPoints[lindex]._id
-            }, $scope.module.topics[tindex].learningPoints[lindex])
-            .$promise.then(function(updatedLearningPoint){
-                $scope.module.topics[tindex].learningPoints[lindex]._id = updatedLearningPoint._id;
-                lindex++;
-                if(lindex < $scope.module.topics[tindex].learningPoints.length) {
-                    $scope.recursiveUpdate(tindex, lindex);
-                }
-                lindex = 0;
-                tindex++;
-                if(tindex < $scope.module.topics.leangth) {
-                    $scope.recursiveUpdate(tindex, lindex);
-                }
-                $state.go('view', {id:$stateParams.id});
-            },
-            function(updatedLearningPoint){
-                console.log(updatedLearningPoint.status);
-            });
-        };
-        $scope.recursiveUpdate(0,0);
+        $state.go('teacher-dashboard');
     };
 
     //BrainStormingSession Functions

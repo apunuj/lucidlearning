@@ -1,0 +1,34 @@
+<div class="container">
+
+  <div class="row">
+    <h2>Find mini-courses to explore a subject deeply here:</h2>
+    <hr>
+    <div class="col-xs-4" ng-repeat="miniCourse in miniCourses">
+      <div class="tile">
+        <div class="row">
+          <div style="text-align:center;"><a ui-sref="makeCourse({id:miniCourse._id})"><i class="fa fa-pencil-square-o fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+        </div>
+        <div class="row">
+          <h3 style="text-align:center;" class="title">{{miniCourse.name}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="row">
+    <h2>Find modules to understand about a specific idea:</h2>
+    <hr>
+    <div class="col-xs-4" ng-repeat="module in modules">
+      <div class="tile">
+        <div class="row">
+          <div style="text-align:center;"><a ui-sref="viewModule({id:module._id})"><i class="fa fa-pencil-square-o fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+        </div>
+        <div class="row">
+          <h3 style="text-align:center;" class="title">{{module.name}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

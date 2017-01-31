@@ -4,6 +4,13 @@ angular.module('clientApp')
 
 .controller('TeacherDashboardCtrl', ['$scope','$state','moduleFactory','brainStormingSessionFactory','miniCourseFactory','AuthFactory',function($scope, $state, moduleFactory, brainStormingSessionFactory, miniCourseFactory, AuthFactory){
 
+    $scope.miniCourses = miniCourseFactory.query()
+    .$promise.then(function(response){
+        $scope.miniCourses = response;
+    }, function(response){
+        console.log(response.status);
+    });
+
     $scope.initializeModule = function(){
         moduleFactory.save({name: '', topics: []})
         .$promise.then(function(module){

@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <p style="padding: 5px;"></p>
-                    <button type="button" ng-click="submitContent()" class="btn btn-info btn-sm center-block">Save And Continue</button>
+                    <button type="button" ng-click="submitContent()" class="btn btn-default btn-sm center-block" style="color:#5bc0de;">Save And Continue</button>
                     <p style="padding: 5px;"></p>
                 </div>
             </div>                   
@@ -43,13 +43,12 @@
 
             <div class="row" style="background-color:#FDFEFE;">
                 <div class="btn-info" style="height:50px; text-align:center; vertical-align:middle; position:relative;">
-                    <div id="hello"></div>
                     <h4>Get embeddable links for equations:</h4>
                 </div>
                 <div class="col-xs-12">
                     <div id="equation-editor">
                         <a type ="button" class="btn btn-xs btn-default" href="javascript:OpenLatexEditor('testbox','html','')">Click here</a>
-                        <input type="text" id="testbox" ng-model="equation" rows="1" cols="100">
+                        <input type="text" id="testbox" ng-model="equation" rows="1">
                     </div>
                 </div>
             </div>

@@ -10,6 +10,7 @@ var Verify = require('./verify');
 
 miniCourseRouter.route('/')
 .get(Verify.verifyLearner, Verify.verifyTeacher, function (req, res, next){
+    console.log(req.query.modules);
     MiniCourses.find(req.query).populate({
         path: 'modules',
         select: 'name'

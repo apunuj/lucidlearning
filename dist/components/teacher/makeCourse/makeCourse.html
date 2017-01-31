@@ -9,13 +9,13 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <div ng-if="miniCourseNameSet">
+                    <div ng-if="!miniCourseNameSet">
                         <form ng-submit="setMiniCourseName()">
                             <input type="text" placeholder="Enter Course Name Here" class="input-md col-xs-12" ng-model="miniCourse.name" style="text-align:center;">
                         </form>
                     </div>
-                    <div ng-if="!miniCourseNameSet">
-                        <h4>{{miniCourse.name}}</h4>
+                    <div ng-if="miniCourseNameSet">
+                        <h4 style="text-align:center;">{{miniCourse.name}}</h4>
                     </div>
                     <hr>
                 </div>
@@ -25,8 +25,18 @@
                             <p>{{module.name}}</p>
                             <hr>
                         </li>
-                    </ul>
-                    
+                    </ul> 
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-xs-6">
+                    <button class="btn btn-default center-block" style="color:#5bc0de;" ui-sref="teacher-dashboard"> Finish! </button>
+                </div>
+                <div class="col-xs-6">
+                    <button class="btn btn-default center-block" style="color:#5bc0de;" ng-click="deleteMiniCourse()"> Delete this course </button>
+                </div>
+                <div class="col-xs-12">
+                    <p style="padding:5px;"></p>
                 </div>
             </div>
         </div>
