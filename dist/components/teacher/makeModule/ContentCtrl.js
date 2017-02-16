@@ -82,7 +82,7 @@ angular.module('clientApp')
     };
 
     $scope.addBrainStormingPoint = function(){
-        console.log($scope.brainStormingSession.newPointObject);
+        
         $scope.brainStormingSession.points.push({name: $scope.brainStormingSession.newPointObject.name, completed:$scope.brainStormingSession.newPointObject.completed, bindex: $scope.brainStormingSession.points.length});
         $scope.openPoints.push({name: $scope.brainStormingSession.newPointObject.name, completed:$scope.brainStormingSession.newPointObject.completed, bindex: $scope.brainStormingSession.points.length});
         $scope.brainStormingSession.newPointObject = {

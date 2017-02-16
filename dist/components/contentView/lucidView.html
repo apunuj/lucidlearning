@@ -1,0 +1,22 @@
+
+    <div class="flowtime">
+        
+        <div ng-repeat="topicObject in module.topics track by $index">
+
+            <div class="ft-section">
+
+                <div ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
+                    <div class="ft-page">
+                        <h2 class="module-name" style="text-align: center;">{{module.name | capitalize:true}}</h2>
+                        <h3 class="topic-name">{{topicObject.name | capitalize:true}}</h3>
+                        <h4>{{learningPointObject.name | capitalize}}</h4>
+                        <div ta-bind="text" ng-model="learningPointObject.content"></div>
+                        <hr>
+                    </div>
+                </div>
+            </div>  
+            
+        </div>
+
+    </div>
+    

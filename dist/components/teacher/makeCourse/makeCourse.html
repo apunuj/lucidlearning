@@ -15,7 +15,7 @@
                         </form>
                     </div>
                     <div ng-if="miniCourseNameSet">
-                        <h4 style="text-align:center;">{{miniCourse.name}}</h4>
+                        <p><h4 style="text-align:center;">{{miniCourse.name | capitalize:true}}&nbsp;<small><a ng-click="toggleMiniCourseName()"><span><i class="fa fa-edit"></i></span></a></small></h4></p>
                     </div>
                     <hr>
                 </div>

@@ -1,13 +1,15 @@
 <div class="container">
 
     <div style ="background-color:#FDFEFE;" class="col-xs-12 col-sm-8">
-        <h3 class="module-name" style="text-align: center;">{{module.name | capitalize:true}}</h3>
+        
+        <h1 class="module-name" style="text-align: center;">{{module.name | capitalize:true}}</h1>
         <hr>
+        
         <div ng-repeat="topicObject in module.topics track by $index">
-            <h4 class="topic-name">{{topicObject.name | capitalize:true}}</h4>
+            <h2 class="topic-name">{{topicObject.name | capitalize:true}}</h2>
             <hr>
             <div ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
-                <h4>{{learningPointObject.name | capitalize}}</h4>
+                <h2>{{learningPointObject.name | capitalize}}</h2>
                 <div ta-bind="text" ng-model="learningPointObject.content"></div>
                 <hr>
             </div>
@@ -17,7 +19,7 @@
     <div style="background-color:#FDFEFE;" class="hidden-xs col-sm-3 col-sm-offset-7 affix">
         <div class="row">
             <div class="col-xs-12">
-                <h4 class="module-name">Index</h4>
+                <h3 class="module-name">Index</h3>
                 <hr>
                 <p style="text-align:center;"><strong>{{module.name | capitalize:true}}</strong></p>
                 <ul class="list-unstyled">

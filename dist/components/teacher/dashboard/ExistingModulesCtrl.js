@@ -2,8 +2,19 @@
 
 angular.module('clientApp')
 
-.controller('ExistingModulesCtrl', ['$scope', '$state', 'moduleFactory', function($scope, $state, moduleFactory){
-    $scope.modules = moduleFactory.query({})
+.controller('ExistingModulesCtrl', ['$scope', '$state', 'moduleFactory', 'AuthFactory', function($scope, $state, moduleFactory, AuthFactory){
+    
+    var user = AuthFactory.getUserDetails();
+
+    if (user.admin) {
+        var filter = {};
+    } else {
+        var filter = {
+            createdBy: user._id
+        }
+    }
+
+    $scope.modules = moduleFactory.query(filter)
                     .$promise.then(function(response){
                         $scope.modules = response;
                     },

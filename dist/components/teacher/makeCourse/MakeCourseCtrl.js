@@ -65,6 +65,10 @@ angular.module('clientApp')
         })
     };
 
+    $scope.toggleMiniCourseName = function(){
+        $scope.miniCourseNameSet = !$scope.miniCourseNameSet;
+    }
+
     var updateMiniCourse = function(cb) {
         miniCourseFactory.update({id: $stateParams.id},{modules: $scope.moduleIdArray})
         .$promise.then(function(response){

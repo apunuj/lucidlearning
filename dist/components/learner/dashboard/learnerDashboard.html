@@ -5,11 +5,25 @@
     <hr>
     <div class="col-xs-4" ng-repeat="miniCourse in miniCourses">
       <div class="tile">
-        <div class="row">
-          <div style="text-align:center;"><a ui-sref="makeCourse({id:miniCourse._id})"><i class="fa fa-pencil-square-o fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+       <div class="row" style="background-color:#337ab7;">
+          <p style="padding:10px;"></p>
+          <div style="text-align:center;"><a ui-sref="viewCourse({id:miniCourse._id})"><i class="fa fa-university fa-4x link-icon" style="color:white;"></i></a></div>
+          <p style="padding:10px;"></p>
         </div>
         <div class="row">
-          <h3 style="text-align:center;" class="title">{{miniCourse.name}}</h3>
+          <a ui-sref="viewCourse({id:miniCourse._id})"><h4 style="text-align:center;" class="title">{{miniCourse.name}}</h4></a>
+        </div>
+        <div class="row">
+          <p style="padding:5px;"></p>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <button class="btn btn-xs btn-default" ui-sref="viewCourse({id:miniCourse._id})" style="color: #337ab7; vertical-align: center;"> Go Inside </button>
+          </div>
+          <div class="col-xs-6">
+            <button class="btn btn-xs btn-default" ui-sref="viewCourse({id:miniCourse._id})" style="color: #337ab7; vertical-align: center;"> Subscribe </button>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -21,11 +35,26 @@
     <hr>
     <div class="col-xs-4" ng-repeat="module in modules">
       <div class="tile">
-        <div class="row">
-          <div style="text-align:center;"><a ui-sref="viewModule({id:module._id})"><i class="fa fa-pencil-square-o fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+        <div class="row" style="background-color:#5cb85c;">
+          <p style="padding:5px;"></p>
+          <div style="text-align:center;"><a ui-sref="viewModule({id:module._id})"><i class="fa fa-map-o fa-2x link-icon" style="color:white;"></i></a></div>
+          <p style="padding:5px;"></p>
         </div>
         <div class="row">
-          <h3 style="text-align:center;" class="title">{{module.name}}</h3>
+          <div class="col-xs-12">
+            <h4 class="title">{{module.name}}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <p style="padding:10px;"></p>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <button class="btn btn-xs btn-default" ui-sref="viewModule({id:module._id})" style="color: #337ab7; vertical-align: center;"> Read </button>
+          </div>
+          <div class="col-xs-6">
+            <button class="btn btn-xs btn-default" ui-sref="viewModule({id:module._id})" style="color: #337ab7; vertical-align: center;"> Bookmark </button>
+          </div>
         </div>
       </div>
     </div>

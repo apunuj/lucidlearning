@@ -23,6 +23,16 @@ angular.module('clientApp', [
 
 })
 
+/**
+ * .config(function($locationProvider) {
+    
+        // use the HTML5 History API
+        $locationProvider.html5Mode(true);
+})
+ */
+
+
+
 .config(function($stateProvider, $urlRouterProvider){
     $stateProvider
 
@@ -153,10 +163,31 @@ angular.module('clientApp', [
         }
     })
 
-    .state('previewCourse', {
-        url: '/previewCourses',
+    .state('lucidView', {
+        url:'/lucidView/:id',
         views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/contentView/lucidView.html',
+                controller: 'ViewCtrl'
+            }
+        }
+    })
 
+    .state('viewCourse', {
+        url: '/viewCourse/:id',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/learner/viewCourse/viewCourse.html',
+                controller: 'ViewCourseCtrl'
+            }
         }
     })
 

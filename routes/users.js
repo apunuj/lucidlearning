@@ -6,12 +6,12 @@ var Verify = require('./verify');
 
 /* GET users listing. */
 router.get('/', Verify.verifyLearner, Verify.verifyAdmin, function(req, res, next) {
-  User.find({}, function(err,dish){
+  User.find(req.query, function(err, users){
         if (err) {
            res.send(err);
            return;
        } 
-        res.json(dish);
+        res.json(users);
     });
 });
 

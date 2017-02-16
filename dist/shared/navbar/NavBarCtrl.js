@@ -6,6 +6,9 @@ angular.module('clientApp')
 
     $scope.loggedIn = false;
     $scope.email = '';
+    var user = AuthFactory.getUserDetails();
+
+    $scope.isAdmin = user.admin;
     
     if(AuthFactory.isAuthenticated()) {
         $scope.loggedIn = true;

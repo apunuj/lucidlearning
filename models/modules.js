@@ -13,10 +13,10 @@ var moduleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Topic'
     }],
-    createdBy: [{
+    createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }]
+    }
 }, {timestamps: true});
 
 var Modules = mongoose.model('Module', moduleSchema);

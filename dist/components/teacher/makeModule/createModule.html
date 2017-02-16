@@ -23,7 +23,7 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-12" ng-repeat="topicObject in module.topics track by $index">
+                <div class="col-xs-12" ng-repeat="topicObject in module.topics track by $index" ng-init="parentIndex = $index">
                     <div class="button-group pull-right">
                         <button class="btn btn-xs btn-success pull-right" ng-click="removeTopic($index)">
                             <i class="fa fa-times"></i>
@@ -54,29 +54,29 @@
                         <ul>
                             <li ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
                                 <div class="button-group pull-right">
-                                    <button class="btn btn-xs btn-default pull-right" ng-click="removeLearningPoint($parent.$index, $index)">
+                                    <button class="btn btn-xs btn-default pull-right" ng-click="removeLearningPoint(parentIndex, $index)">
                                         <i class="fa fa-times"></i>
                                     </button>
-                                    <button class="btn btn-xs btn-default pull-right" ng-click="moveLearningPointUp($parent.$index, $index)">
+                                    <button class="btn btn-xs btn-default pull-right" ng-click="moveLearningPointUp(parentIndex, $index)">
                                         <i class="fa fa-arrow-up"></i>
                                     </button>
-                                    <button class="btn btn-xs btn-default pull-right" ng-click="moveLearningPointDown($parent.$index, $index)">
+                                    <button class="btn btn-xs btn-default pull-right" ng-click="moveLearningPointDown(parentIndex, $index)">
                                         <i class="fa fa-arrow-down"></i>
                                     </button>
-                                    <button class="btn btn-xs btn-default pull-right" ng-click="editLearningPoint($parent.$index, $index)">
+                                    <button class="btn btn-xs btn-default pull-right" ng-click="editLearningPoint(parentIndex, $index)">
                                         <i class="fa fa-edit"></i>
                                     </button>
                                 </div>
                                  <div>
-                                    <div ng-if="!editLearningPointToggle[$parent.$index][$index]">
+                                    <div ng-show="!editLearningPointToggle[parentIndex][$index]">
                                         <p>{{learningPointObject.name | capitalize}}</p>
                                     </div>
-                                    <div ng-if="editLearningPointToggle[$parent.$index][$index]">
-                                        <form  style="padding-top:0px; padding-bottom: 20px;" class="form" ng-submit="submitNewLearningPointName($parent.$index, $index)">
+                                    <div ng-show="editLearningPointToggle[parentIndex][$index]">
+                                        <form  style="padding-top:0px; padding-bottom: 20px;" class="form" ng-submit="submitNewLearningPointName(parentIndex, $index)">
                                             <input type="text" class="input-md col-xs-8" ng-model="learningPointObject.name"> 
                                         </form>
                                     </div>
-                                </div>
+                                 </div>
                                 <hr>
                             </li>
                             <form style="box-sizing:border-box;" class="form-inline" ng-submit="addLearningPoint($index)" name="learningPointForm">

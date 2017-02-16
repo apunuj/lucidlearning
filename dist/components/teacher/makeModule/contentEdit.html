@@ -10,7 +10,11 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <h3 class="module-name" style="text-align: center;">{{module.name | capitalize:true}}&nbsp;<button class="btn btn-xs btn-default" ui-sref="createModule({id:module._id})" style="color: #337ab7; vertical-align: center;"> Edit Structure </button></h3>
+                    <h3 class="module-name" style="text-align: center;">
+                        {{module.name | capitalize:true}}&nbsp;
+                        <button class="btn btn-xs btn-default" ui-sref="createModule({id:module._id})" style="color: #337ab7; vertical-align: center;"> Edit Structure </button>
+                       <!-- <button class="btn btn-xs btn-default" ui-sref="lucidView({id:module._id})" style="color: #337ab7; vertical-align: center;"> Lucid View </button> -->
+                    </h3>
                     <hr>
                 </div>
             </div>

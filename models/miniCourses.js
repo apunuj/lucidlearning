@@ -13,10 +13,10 @@ var miniCourseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Module'
     }],
-    createdBy: [{
+    createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }]
+    }
 }, {timestamps: true});
 
 var MiniCourses = mongoose.model('MiniCourse', miniCourseSchema);

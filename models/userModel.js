@@ -26,9 +26,13 @@ var UserSchema = new Schema({
     },
     teacher: {
         type: Boolean,
-        default: false
+        default: true
     },
     moderator: {
+        type: Boolean,
+        default: false
+    },
+    freelancer: {
         type: Boolean,
         default: false
     }

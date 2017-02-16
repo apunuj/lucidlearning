@@ -79,6 +79,13 @@ input[type=text] {
   background: #b8431f;
 }
 
+.tile.info {
+  background: #5bc0de;
+}
+.tile.info:hover {
+  background:  #31b0d5;;
+}
+
  form {
    padding-bottom: 20px;
    padding-top: 0px;
