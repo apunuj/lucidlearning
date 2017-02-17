@@ -7,7 +7,8 @@ angular.module('clientApp', [
     'ngDialog',
     'ngResource',
     'textAngular',
-    'ui.router'
+    'ui.router',
+    'oc.lazyLoad'
   ])
 
 .constant('baseUrl', 'http://localhost:3000/')
@@ -23,13 +24,13 @@ angular.module('clientApp', [
 
 })
 
-/**
- * .config(function($locationProvider) {
+
+ .config(function($locationProvider) {
     
         // use the HTML5 History API
         $locationProvider.html5Mode(true);
 })
- */
+
 
 
 
@@ -172,7 +173,7 @@ angular.module('clientApp', [
             },
             'body': {
                 templateUrl: 'components/contentView/lucidView.html',
-                controller: 'ViewCtrl'
+                controller: 'LucidViewCtrl'
             }
         }
     })

@@ -55,6 +55,7 @@ var Flowtime = (function ()
    */
   var ftContainer = document.querySelector(".flowtime");                                 // cached reference to .flowtime element
   var ftParent = ftContainer.parentNode;                                                 // cached reference to .flowtime parent element
+  console.log(ftParent);
   var html = document.querySelector("html");                                             // cached reference to html element
   var body = document.querySelector("body");                                             // cached reference to body element
   var useHash = false;                                                                   // if true the engine uses only the hash change logic
@@ -208,10 +209,9 @@ var Flowtime = (function ()
       parallaxElements = [];
       fragments = document.querySelectorAll(FRAGMENT_SELECTOR);
       fragmentsArray = [];
-      sections = ftContainer.querySelectorAll("div.ft-section");
-      allPages = ftContainer.querySelectorAll("div.ft-page");
-      console.log('Here are the sections and pages:');
+      sections = ftContainer.querySelectorAll(".flowtime > " + SECTION_SELECTOR);
       console.log(sections);
+      allPages = ftContainer.querySelectorAll(".flowtime " + PAGE_SELECTOR);
       console.log(allPages);
       //
       for (var i = 0; i < sections.length; i++) {
