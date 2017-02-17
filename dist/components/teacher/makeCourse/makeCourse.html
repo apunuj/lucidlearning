@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="row">
+       
+        <div class="col-xs-12 col-sm-4 affix" style ="background-color:#FDFEFE">
+            <div class="row">
+                <div class="btn-info" style="height:100px;">
+                    <h3>New Mini-Course:</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div ng-if="!miniCourseNameSet">
+                        <form ng-submit="setMiniCourseName()">
+                            <input type="text" placeholder="Enter Course Name Here" class="input-md col-xs-12" ng-model="miniCourse.name" style="text-align:center;">
+                        </form>
+                    </div>
+                    <div ng-if="miniCourseNameSet">
+                        <p><h4 style="text-align:center;">{{miniCourse.name | capitalize:true}}&nbsp;<small><a ng-click="toggleMiniCourseName()"><span><i class="fa fa-edit"></i></span></a></small></h4></p>
+                    </div>
+                    <hr>
+                </div>
+                <div class="col-xs-12">
+                    <ul class="list-unstyled">
+                        <li ng-repeat="module in miniCourse.modules">
+                            <p>{{module.name}}</p>
+                            <hr>
+                        </li>
+                    </ul> 
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-xs-6">
+                    <button class="btn btn-default center-block" style="color:#5bc0de;" ui-sref="teacher-dashboard"> Finish! </button>
+                </div>
+                <div class="col-xs-6">
+                    <button class="btn btn-default center-block" style="color:#5bc0de;" ng-click="deleteMiniCourse()"> Delete this course </button>
+                </div>
+                <div class="col-xs-12">
+                    <p style="padding:5px;"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-sm-offset-6" style ="background-color:#FDFEFE">
+            <div class="row">
+                <div class="btn-info" style="height:100px;">
+                    <h3> Pick modules to include in the mini-course from here:</h3>
+                </div>
+                <div class="col-xs-12">
+                    <ul class="list-unstyled">
+                        <li ng-repeat="module in modules">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="module.isSelected" ng-click="selectModule($index)"> {{module.name}}
+                                </label>
+                            </div>
+                            <hr>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

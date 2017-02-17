@@ -12,6 +12,10 @@ var UserSchema = new Schema({
     password: {
         type: String
     },
+    friends: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     admin: {
         type: Boolean,
         default: false
@@ -22,13 +26,17 @@ var UserSchema = new Schema({
     },
     teacher: {
         type: Boolean,
-        default: false
+        default: true
     },
     moderator: {
         type: Boolean,
         default: false
+    },
+    freelancer: {
+        type: Boolean,
+        default: false
     }
-});
+}, {timestamps: true});
 
 UserSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
 

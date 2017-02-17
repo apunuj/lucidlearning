@@ -1,34 +1,80 @@
 var express = require('express');
 var moduleRouter = express.Router();
 
+var async = require('async');
+
 var Modules = require('../models/modules');
+var Topics = require('../models/topics');
+var LearningPoints = require('../models/learningPoints');
 
 var Verify = require('./verify');
 
 moduleRouter.route('/')
 .get(Verify.verifyLearner, function(req, res, next){
-    Modules.find(req.query, function(err, modules) {
-        if (err) {
-            console.log(err);
-            next(err);
-        }
-        res.json(modules);
-    });
+   Modules.find(req.query).populate({
+       path: 'topics',
+       model: 'Topic',
+       populate: {
+           path: 'learningPoints',
+           model: 'LearningPoint'
+       }
+   }).exec(function(err, modules){
+       if (err) {
+           next(err);
+       }
+       res.json(modules);
+   });
 })
 .post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.create(req.body, function(err, module){
+    Modules.create({name: req.body.name, topics: []}, function(err, module){
         if (err) {
             console.log(err);
             next(err);
         }
         else {
-            console.log("module created");
-            res.json(module);
+            console.log("initial version of module created");
+        
+            async.eachSeries(req.body.topics, function(topic, outcb) {
+                Topics.create({name: topic.name, learningPoints: []}, function(err, newTopic){
+                    module.topics.push(newTopic._id);
+                    console.log("initial version of topic created");
+                    async.eachSeries(topic.learningPoints, function(learningPoint, cb) {
+                        LearningPoints.create(learningPoint, function(err, newLearningPoint) {
+                            newTopic.learningPoints.push(newLearningPoint._id);
+                            console.log("learning Point Created");
+                            cb();
+                        });
+                    }, function (err) {
+                        if (err) {
+                            next(err);
+                        }
+                        newTopic.save(function(err, newTopic){
+                            console.log(newTopic);
+                            
+                        });
+                        outcb();
+                    });  
+                });
+            }, function(err){
+                if (err) {
+                    next(err);
+                }
+                module.save(function(err, module){
+                    if (err){
+                        console.log(err);
+                        next(err);
+                    }
+                    else {
+                        console.log("module created");
+                        res.json(module);
+                    }
+                });
+            });     
         }
     });
 })
-.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
-    Modules.remove({}, function(err, resp){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next) {
+    Modules.remove(req.query, function(err, resp){
         if (err) {
             console.log(err);
             next(err);
@@ -39,15 +85,23 @@ moduleRouter.route('/')
 
 moduleRouter.route('/:id')
 .get(Verify.verifyLearner, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
+    Modules.findById(req.params.id).populate({
+        path: 'topics',
+        model: 'Topic',
+        populate: {
+            path: 'learningPoints',
+            model: 'LearningPoint'
+        }
+    }).exec(function(err, module){
         if (err) {
-           console.log(err);
-           next(err);
-       } 
+            next(err);
+        }
         res.json(module);
     });
 })
 .put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
+    /**only for change in module name or reassigning the entire topic array ids for reordering
+    */
     Modules.findByIdAndUpdate(req.params.id, {
         $set: req.body
     }, {
@@ -60,7 +114,7 @@ moduleRouter.route('/:id')
         res.json(module)
     });
 })
-.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
     Modules.findByIdAndRemove(req.params.id, function(err, resp){
         if (err) {
            console.log(err);
@@ -72,193 +126,209 @@ moduleRouter.route('/:id')
 
 moduleRouter.route('/:id/topics')
 .get(Verify.verifyLearner, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
-       if (err) {
-           console.log(err);
-           next(err);
-       } 
+    Modules.findById(req.params.id).populate({
+        path: 'topics',
+        model: 'Topic',
+        populate: {
+            path: 'learningPoints',
+            model: 'LearningPoint'
+        }
+    }).exec(function(err, module){
+        if (err){
+            next(err);
+        }
         res.json(module.topics);
     });
 })
 .post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
-        if (err) {
-           console.log(err);
-           next(err);
-       } 
-        module.topics.push(req.body);
-        module.save(function(err, umodule){
-            if (err) {
-                console.log(err);
-                next(err);
-            } 
-            console.log('Topic added');
-            res.json(umodule);
-        });
-    });
-})
-.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
-        if (err) {
-           console.log(err);
-           next(err);
-       } 
-        for (var i = (module.topics.length - 1); i >= 0; i--){
-            module.topics.id(module.topics[i]._id).remove();
+    Topics.create(req.body, function(err, topic){
+        if (err){
+            next(err);
         }
-        module.save(function(err, module){
+        Modules.findById(req.params.id, function(err, module){
             if (err) {
-                console.log(err);
-                next(err);
+            console.log(err);
+            next(err);
             } 
-            res.writeHead(200, {
-                'Content-Type':'text/plain'
+            module.topics.push(topic._id);
+            module.save(function(err, umodule){
+                if (err) {
+                    console.log(err);
+                    next(err);
+                } 
+                console.log('Topic added');
+                res.json(topic);
             });
-            res.end('Deleted all the topics!');
+        });
+    }); 
+})
+.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
+    Modules.findById(req.params.id, function(err, module){
+        if (err) {
+           console.log(err);
+           next(err);
+       } 
+       async.eachSeries(module.topics, function(topic, cb){
+           Topics.findByIdAndRemove(topic._id, function(err, resp){
+               if (err){
+                   next(err);
+               }
+               res.send("topics deleted");
+               cb();
+           });
+       }, function(err){
+           if (err) {
+               next (err);
+           }
+           module.topics = [];
+           module.save(function(err, module){
+               console.log("Updated module:"+module);
+               res.json(resp)
+           });
         });
     });
 });
 
 moduleRouter.route('/:id/topics/:tid')
 .get(Verify.verifyLearner, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
-        if (err) {
-           console.log(err);
-           next(err);
+    Topics.findById(req.params.tid).populate({
+        path: 'learningPoints',
+        model: 'LearningPoint'
+    }).exec(function(err, topics){
+        if(err){
+            next(err);
         }
-        res.json(module.topics.id(req.params.tid));
+        res.json(topics);
     });
 })
 .put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
+    Topics.findByIdAndUpdate(req.params.tid, {
+        $set: req.body
+    }, {
+        new: true
+    }, function(err, topic){
         if (err) {
            console.log(err);
            next(err);
        } 
-        var i = module.topics.indexOf(module.topics.id(req.params.tid));
-        
-        module.topics.id(req.params.tid).remove();
-        module.topics.splice(i, 0, req.body);
-        module.save(function(err, module){
-            if (err) {
-                console.log(err);
-                next(err);
-            } 
-            console.log('Topics updated')
-            res.json(module.topics[i]);
-        });
+        res.json(topic)
     });
 })
-.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
-        if (err) {
-           console.log(err);
-           next(err);
-       } 
-        module.topics.id(req.params.tid).remove();
-        module.save(function(err, module){
-            if (err) {
-                console.log(err);
+.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
+    Topics.findByIdAndRemove(req.params.tid, function(err, resp){
+        if (err){
+            next(err);
+        }
+        console.log("Topic Removed");
+        Modules.findById(req.params.id, function(err, module){
+            if (err){
                 next(err);
-            } 
-            res.json(module);
+            }
+            module.topics.splice(module.topics.indexOf(req.params.tid),1);
+            res.json(resp);
         });
     });
 });
 
 moduleRouter.route('/:id/topics/:tid/learningPoints')
 .get(Verify.verifyLearner, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
+    Topics.findById(req.params.tid).populate({
+        path: 'learningPoints',
+        model: 'LearningPoint'
+    }).exec(function(err, topic){
        if (err) {
            console.log(err);
            next(err);
        }
-       res.json(module.topics.id(req.params.tid).learningPoints);
+       res.json(topic.learningPoints);
     });
 })
 .post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
-        if (err) {
-           console.log(err);
-           next(err);
-       } 
-        module.topics.id(req.params.tid).learningPoints.push(req.body);
-        module.save(function(err, umodule){
-            if (err) {
-                console.log(err);
-                next(err);
-            } 
-            console.log('Learning Point added');
-            res.json(umodule);
-        });
-    });
-})
-.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
-        if (err) {
-           console.log(err);
-           next(err);
-       } 
-        for (var i = (module.topics.id(req.params.tid).learningPoints.length - 1); i >= 0; i--){
-            module.topics.id(req.params.tid).learningPoints.id(module.topics.id(req.params.tid).learningPoints[i]._id).remove();
+    LearningPoints.create(req.body, function(err, learningPoint){
+        if (err){
+            next(err);
         }
-        module.save(function(err, module){
+        Topics.findById(req.params.tid, function(err, topic){
             if (err) {
-                console.log(err);
-                next(err);
+            console.log(err);
+            next(err);
             } 
-            res.writeHead(200, {
-                'Content-Type':'text/plain'
+            topic.learningPoints.push(learningPoint._id);
+            topic.save(function(err, utopic){
+                if (err) {
+                    console.log(err);
+                    next(err);
+                } 
+                console.log('Learning Point added');
+                res.json(learningPoint);
             });
-            res.end('Deleted all the Learning Points!');
+        });
+    }); 
+})
+.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
+    Topics.findById(req.params.tid, function(err, topic){
+        if (err) {
+           console.log(err);
+           next(err);
+       } 
+       async.eachSeries(topic.learningPoints, function(learningPoint, cb){
+           LearningPoints.findByIdAndRemove(learningPoint._id, function(err, resp){
+               if (err){
+                   next(err);
+               }
+               res.send("learning points deleted");
+               cb();
+           });
+       }, function(err){
+           if (err) {
+               next (err);
+           }
+           topic.learningPoints = [];
+           topic.save(function(err, topic){
+               console.log("Updated topic:"+topic);
+               res.json(resp);
+           });
         });
     });
 });
 
 moduleRouter.route('/:id/topics/:tid/learningPoints/:lid')
 .get(Verify.verifyLearner, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
+    LearningPoints.findById(req.params.lid, function(err, learningPoint){
         if (err) {
            console.log(err);
            next(err);
         } 
-        res.json(module.topics.id(req.params.tid).learningPoints.id(req.params.lid));
+        res.json(learningPoint);
     });
 })
 .put(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
+    LearningPoints.findByIdAndUpdate(req.params.lid, {
+        $set: req.body
+    }, {
+        new: true
+    }, function(err, learningPoint){
         if (err) {
            console.log(err);
            next(err);
-       } 
-       
-       var i = module.topics.id(req.params.tid).learningPoints.indexOf(module.topics.id(req.params.tid).learningPoints.id(req.params.lid));
-        
-        module.topics.id(req.params.tid).learningPoints.id(req.params.lid).remove();
-        module.topics.id(req.params.tid).learningPoints.splice(i, 0, req.body);
-        module.save(function(err, module){
-            if (err) {
-                console.log(err);
-                next(err);
-            } 
-            console.log('Learning Point updated')
-            res.json(module.topics.id(req.params.tid).learningPoints[i]);
-        });
+       }
+       res.json(learningPoint);
     });
 })
-.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.findById(req.params.id, function(err, module){
-        if (err) {
-           console.log(err);
-           next(err);
-       } 
-        module.topics.id(req.params.tid).learningPoints.id(req.params.lid).remove();
-        module.save(function(err, module){
-            if (err) {
-                console.log(err);
+.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
+    LearningPoints.findByIdAndRemove(req.params.lid, function(err, resp){
+        if (err){
+            next(err);
+        }
+        console.log("Learning Point Removed");
+        Topics.findById(req.params.tid, function(err, topic){
+            if (err){
                 next(err);
-            } 
-            res.json(module);
+            }
+            topic.learningPoints.splice(topic.learningPoints.indexOf(req.params.lid),1);
+            topic.save(function(err, savedTopic){
+                res.json(resp);
+            })
         });
     });
 });

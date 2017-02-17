@@ -1,0 +1,63 @@
+<div class="container">
+
+  <div class="row">
+    <h2>Modules:</h2>
+    <hr>
+    <div class="col-xs-12 col-sm-4">
+      <div class="tile">
+        <div class="row">
+          <div style="text-align:center"><a ng-click="initializeModule()"><i class="fa fa-plus-circle fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+        </div>
+        <div class="row">
+          <h3 style="text-align:center;" class="title">New module</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <div class="tile">
+        <div class="row">
+          <div style="text-align:center"><a ui-sref="existingModules"><i class="fa fa-pencil-square-o fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+        </div>
+        <div class="row">
+           <h3 style="text-align:center;" class="title">Finished Modules</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <div class="tile">
+        <div class="row">
+          <div style="text-align:center"><a ui-sref="existingModules"><i class="fa fa-pencil-square-o fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+        </div>
+        <div class="row">
+          <h3 style="text-align:center;" class="title">Unfinished Modules</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>Mini-Courses:</h2>
+    <hr>
+     <div class="col-xs-12 col-sm-4">
+      <div class="tile">
+        <div class="row">
+          <div style="text-align:center"><a ng-click="initializeMiniCourse()"><i class="fa fa-plus-circle fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+        </div>
+        <div class="row">
+          <h3 style="text-align:center;" class="title">New Mini-Course</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-4" ng-repeat="miniCourse in miniCourses">
+      <div class="tile">
+        <div class="row">
+          <div style="text-align:center;"><a ui-sref="makeCourse({id:miniCourse._id})"><i class="fa fa-pencil-square-o fa-4x link-icon" style="color:#5bc0de;"></i></a></div>
+        </div>
+        <div class="row">
+          <h3 style="text-align:center;" class="title">{{miniCourse.name}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

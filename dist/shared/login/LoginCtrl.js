@@ -2,7 +2,7 @@
 
 angular.module('clientApp')
 
-.controller('LoginController', ['$scope', 'ngDialog', '$localStorage', 'AuthFactory', function ($scope, ngDialog, $localStorage, AuthFactory) {
+.controller('LoginCtrl', ['$scope', 'ngDialog', '$localStorage', 'AuthFactory', function ($scope, ngDialog, $localStorage, AuthFactory) {
     
     $scope.loginData = $localStorage.getObject('userinfo','{}');
     
