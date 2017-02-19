@@ -1,15 +1,23 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var learningPointSchema = new Schema({
-    name: {type: String},
-    content: {type: String}
-});
-
 var topicSchema = new Schema({
-    name: {type: String},
-    learningPoints: [learningPointSchema]
-});
+    name: {
+        type: String
+    },
+    tags: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Tag'
+    }],
+    learningPoints: [{
+        type: Schema.Types.ObjectId,
+        ref: 'LearningPoint'
+    }],
+    createdBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }]
+}, {timestamps: true});
 
 var Topics = mongoose.model('Topic', topicSchema);
 

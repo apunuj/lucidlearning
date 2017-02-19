@@ -8,7 +8,7 @@
 }
 
 .module-name {
-    color: blue;
+    color: #337ab7;
 }
 
 .topic-name {
@@ -19,33 +19,74 @@ body{
     padding:50px 0px 0px 0px;
     z-index:0;
 }
-/* cloud */
-hr.style-five {
-    border: 0;
-    height: 0; /* Firefox... */
-    box-shadow: 0 0 10px 1px black;
-}
-
-/* Double-color dashed line */
-
-hr.style-three {
-    border: 0;
-    border-bottom: 1px dashed #ccc;
-    background: #999;
-}
-
-/* gradient */
-hr.style-two {
-    border: 0;
-    height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-}
-
+ 
 input[type=text] {
     border: none;
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid black;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .row {
     padding: 5px 0px 0px 0px;
 }
+
+.tile {
+  width: 250px; 
+  height: 250px;
+  display: inline-block;
+  box-sizing: border-box;
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 30px;
+  overflow: auto;
+}
+
+.tile .title {
+  margin-top: 0px;
+}
+.tile.purple, .tile.blue, .tile.red, .tile.orange, .tile.green {
+  color: #fff;
+}
+.tile.purple {
+  background: #5133AB;
+}
+.tile.purple:hover {
+  background: #3e2784;
+}
+.tile.red {
+  background: #AC193D;
+}
+.tile.red:hover {
+  background: #7f132d;
+}
+.tile.green {
+  background: #00A600;
+}
+.tile.green:hover {
+  background: #007300;
+}
+.tile.blue {
+  background: #2672EC;
+}
+.tile.blue:hover {
+  background: #125acd;
+}
+.tile.orange {
+  background: #DC572E;
+}
+.tile.orange:hover {
+  background: #b8431f;
+}
+
+.tile.info {
+  background: #5bc0de;
+}
+.tile.info:hover {
+  background:  #31b0d5;;
+}
+
+ form {
+   padding-bottom: 20px;
+   padding-top: 0px;
+ }

@@ -2,9 +2,21 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var learningPointSchema = new Schema({
-    name: {type: String},
-    content: {type: String}
-});
+    name: {
+        type: String
+    },
+    tags: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Tag'
+    }],
+    content: {
+        type: String
+    },
+    createdBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
+}, {timestamps: true});
 
 var LearningPoints = mongoose.model('LearningPoint', learningPointSchema);
 

@@ -6,7 +6,7 @@ var Verify = require('./verify');
 
 lpRouter.route('/')
 .get(Verify.verifyLearner, function(req, res, next){
-    LearningPoints.find({}, function(err, learningPoints) {
+    LearningPoints.find(req.query, function(err, learningPoints) {
         if (err) {
             console.log(err);
             next(err);
@@ -20,16 +20,11 @@ lpRouter.route('/')
             console.log(err);
             next(err);
         }
-        console.log("LP created");
-        var id = learningPoint._id;
-        res.writeHead(200, {
-           'Content-Type': 'text/plain'
-        });
-        res.end('Added the LP with ID: '+id);
+        res.json(learningPoint._id);
     });
 })
 .delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next) {
-    LearningPoints.remove({}, function(err, resp){
+    LearningPoints.remove(req.query, function(err, resp){
         if (err) {
             console.log(err);
             next(err);

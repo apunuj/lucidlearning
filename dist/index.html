@@ -9,8 +9,8 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="assets/bower_components/textAngular/dist/textAngular.css" />
+    <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/bower_components/textAngular/dist/textAngular.css">
     <link href="assets/bower_components/ng-dialog/css/ngDialog.min.css" rel="stylesheet">
     <link href="assets/bower_components/ng-dialog/css/ngDialog-theme-plain.min.css" rel="stylesheet">
     <link href="assets/bower_components/ng-dialog/css/ngDialog-theme-default.min.css" rel="stylesheet">
@@ -22,11 +22,13 @@
     <!-- build:css styles/main.css -->
     <link href="./assets/styles/main.css" rel="stylesheet">
     <link href="./assets/styles/myStyles.css" rel="stylesheet">
+    <link href="./assets/katex/katex.css" rel="stylesheet"> 
+    
     <!-- endbuild -->
-    <link rel ="stylesheet" href="./assets/mathquill/mathquill.css">
-    <link rel="stylesheet" href="assets/katex/katex.min.css">
-    <script src="assets/katex/katex.min.js"></script>
-    </head>
+    
+
+   
+</head>
 
 <body style="background-color:#E5E8E8;" ng-app="clientApp">
     <!--[if lte IE 8]>
@@ -34,51 +36,11 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-<div class="header" ng-controller="HeaderController">
-   <div>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" ui-sref="home">Lucid</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li ng-class="{active: stateis('home')}"><a ui-sref="home">
-                        <span class="glyphicon glyphicon-home"
-                         aria-hidden="true"></span> Home</a></li>
-                    <li ng-class="{active: stateis('aboutus')}"><a ui-sref="aboutus">
-                        <span class="glyphicon glyphicon-info-sign"
-                         aria-hidden="true"></span> About</a></li>
-                     <li ng-class="{active: stateis('contactus')}"><a ui-sref="contactus">
-                     <i class="fa fa-envelope-o"></i> Contact</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li ng-if="!loggedIn"><a ng-click="openLogin()">
-                    <span class="glyphicon glyphicon-log-in"></span> Login</a>
-                    </li>
-                    <li ng-if="loggedIn">
-                    <a>{{email}}</a>
-                    </li>
-                    <li ng-if="loggedIn">
-                    <a ng-click="logOut()">
-                    <span class="glyphicon glyphicon-log-in"></span> Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div> 
+<div class="header">
+    <div ui-view="navbar"></div>
 </div>
 
-<div class="container">
-    <div ui-view></div>
-</div>
+<div ui-view="body"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>
@@ -108,36 +70,30 @@
 <script src="assets/bower_components/textAngular/dist/textAngularSetup.js"></script>
 <script src="assets/bower_components/ng-dialog/js/ngDialog.min.js"></script>
 <!-- endbower -->
-<script src="assets/mathquill/mathquill.js"></script>
-<script>
-    var MQ = MathQuill.getInterface(2);
-    var problemSpan = document.getElementById('problem');
-    MQ.StaticMath(problemSpan);
-</script>
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="./app.js"></script>
-<script src="./components/brainstorm/scripts/learningPointCtrl.js"></script>
-<script src="./components/brainstorm/scripts/ModuleNameCtrl.js"></script>
-<script src="./components/brainstorm/scripts/TopicsCtrl.js"></script>
-<script src="./components/create/scripts/StructureCtrl.js"></script>
-<script src="./components/create/scripts/ContentCtrl.js"></script>
-<script src="./components/dashboard/ExistingModulesCtrl.js"></script>
-<script src="./components/home/HomeCtrl.js"></script>
-<script src="./components/organize/CreateCtrl.js"></script>
-<script src="./components/preview/ViewCtrl.js"></script>
-<script src="./shared/factories/authFactory.js"></script>
-<script src="./shared/factories/dataFactory.js"></script>
-<script src="./shared/factories/moduleFactory.js"></script>
-<script src="./shared/factories/topicFactory.js"></script>
-<script src="./shared/factories/learningPointFactory.js"></script>
-<script src="./shared/header/HeadCtrl.js"></script>
-<script src="./shared/login/LoginCtrl.js"></script>
-<script src="./shared/otherScripts/filters.js"></script>
-<script src="./shared/otherScripts/localStorage.js"></script>
-<script src="./shared/otherScripts/symbolize.js"></script>
-<script src="./shared/Signup/SignupCtrl.js"></script>
+<script src="shared/navbar/NavBarCtrl.js"></script>
+<script src="shared/login/LoginCtrl.js"></script>
+<script src="shared/factories/localStorage.js"></script>
+<script src="shared/factories/authFactory.js"></script>
+<script src="shared/factories/dataFactory.js"></script>
+<script src="shared/factories/moduleFactory.js"></script>
+<script src="shared/factories/topicFactory.js"></script>
+<script src="shared/factories/learningPointFactory.js"></script>
+<script src="shared/factories/brainStormingSessionFactory.js"></script>
+<script src="shared/factories/miniCourseFactory.js"></script>
+<script src="components/teacher/dashboard/teacherDashBoardCtrl.js"></script>
+<script src="components/teacher/makeModule/CreateCtrl.js"></script>
+<script src="shared/otherScripts/capitalize.js"></script>
+<script src="components/teacher/makeModule/ContentCtrl.js"></script>
+<script src="components/teacher/dashboard/ExistingModulesCtrl.js"></script>
+<script src="components/teacher/makeCourse/MakeCourseCtrl.js"></script>
+<script src="components/learner/dashboard/LearnerDashboardCtrl.js"></script>
+<script src="components/contentView/ViewCtrl.js"></script>
+<script src="components/learner/viewCourse/ViewCourseCtrl.js"></script>
+<script src="assets/katex/katex.js"></script>
 <script type="text/javascript" src="http://latex.codecogs.com/editor3.js"></script>
 <!-- endbuild -->
 </body>

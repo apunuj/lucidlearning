@@ -1,24 +1,25 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var learningPointSchema = new Schema({
-    name: {type: String},
-    content: {type: String}
-});
-
-var topicSchema = new Schema({
-    name: {type: String},
-    learningPoints: [learningPointSchema]
-});
-
 var moduleSchema = new Schema({
     name: {
-        type: String,
-        required: true
+        type: String
     },
-    topics: [topicSchema]
+    tags: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Tag'
+    }],
+    topics: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Topic'
+    }],
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, {timestamps: true});
 
 var Modules = mongoose.model('Module', moduleSchema);
+
 
 module.exports = Modules;

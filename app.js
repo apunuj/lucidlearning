@@ -26,6 +26,8 @@ var users = require('./routes/users');
 var moduleRouter = require('./routes/moduleRouter');
 var topicRouter = require('./routes/topicRouter');
 var lpRouter = require('./routes/lpRouter');
+var brainStormingSessionRouter = require('./routes/brainStormingSessionRouter');
+var miniCourseRouter = require('./routes/miniCourseRouter');
 
 //Importing models
 var User = require('./models/userModel');
@@ -67,6 +69,8 @@ app.use('/users', users);
 app.use('/modules', moduleRouter);
 app.use('/topics', topicRouter);
 app.use('/learningPoints', lpRouter);
+app.use('/brainStormingSessions', brainStormingSessionRouter);
+app.use('/miniCourses', miniCourseRouter);
 
 //Catch 404 and pass on to error handler
 app.use(function(req, res, next) {

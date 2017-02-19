@@ -1,0 +1,40 @@
+<div class="container">
+
+    <div style ="background-color:#FDFEFE;" class="col-xs-12 col-sm-8">
+        
+        <h1 class="module-name" style="text-align: center;">{{module.name | capitalize:true}}</h1>
+        <hr>
+        
+        <div ng-repeat="topicObject in module.topics track by $index">
+            <h2 class="topic-name">{{topicObject.name | capitalize:true}}</h2>
+            <hr>
+            <div ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
+                <h2>{{learningPointObject.name | capitalize}}</h2>
+                <div ta-bind="text" ng-model="learningPointObject.content"></div>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <div style="background-color:#FDFEFE;" class="hidden-xs col-sm-3 col-sm-offset-7 affix">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="module-name">Index</h3>
+                <hr>
+                <p style="text-align:center;"><strong>{{module.name | capitalize:true}}</strong></p>
+                <ul class="list-unstyled">
+                    <li ng-repeat="topicObject in module.topics track by $index">
+                        <p>{{topicObject.name | capitalize:true}}</p>
+                        <ul>
+                            <li ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
+                                <p><small>{{learningPointObject.name | capitalize}}</small></p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+       
+    </div>
+
+</div>
