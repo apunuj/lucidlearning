@@ -7,8 +7,7 @@ angular.module('clientApp', [
     'ngDialog',
     'ngResource',
     'textAngular',
-    'ui.router',
-    'oc.lazyLoad'
+    'ui.router'
   ])
 
 .constant('baseUrl', 'http://localhost:3000/')
@@ -23,15 +22,6 @@ angular.module('clientApp', [
     }]);
 
 })
-
-
- .config(function($locationProvider) {
-    
-        // use the HTML5 History API
-        $locationProvider.html5Mode(true);
-})
-
-
 
 
 .config(function($stateProvider, $urlRouterProvider){
@@ -160,20 +150,6 @@ angular.module('clientApp', [
             'body': {
                 templateUrl: 'components/contentView/contentView.html',
                 controller: 'ViewCtrl'
-            }
-        }
-    })
-
-    .state('lucidView', {
-        url:'/lucidView/:id',
-        views: {
-            'navbar': {
-                templateUrl: 'shared/navbar/navBarView.html',
-                controller: 'NavBarCtrl'
-            },
-            'body': {
-                templateUrl: 'components/contentView/lucidView.html',
-                controller: 'LucidViewCtrl'
             }
         }
     })
