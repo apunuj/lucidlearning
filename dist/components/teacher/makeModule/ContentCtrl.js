@@ -7,6 +7,23 @@ angular.module('clientApp')
     .$promise.then(function(response){
         $scope.module = response;
 
+        $scope.learningPointUpdateFlag = [];
+        for (var tindex = 0; tindex < $scope.module.topics.length; tindex++) {
+            $scope.learningPointUpdateFlag.push([]);
+            for (var lindex = 0; lindex <$scope.module.topics[tindex].learningPoints.length; lindex++) {
+                $scope.learningPointUpdateFlag[tindex].push(false);
+                $scope.$watch('$scope.module.topics[tindex].learningPoints[lindex]', function(newValue, oldValue){
+                    for (var tindex = 0; tindex < $scope.module.topics.length; tindex++) {
+                        var lindex = $scope.module.topics[tindex].learningPoints.indexOf(newValue);
+                        if (lindex > -1) {
+                            $scope.learningPointUpdateFlag[tindex][lindex] = true;
+                        }
+                    }
+                    
+                });
+            }
+        }
+
         //initializing the brainstorming session
         $scope.brainStormingSession = brainStormingSessionFactory.query({moduleId:response._id})
         .$promise.then(function(response){
@@ -54,6 +71,7 @@ angular.module('clientApp')
         }, $scope.module.topics[tindex].learningPoints[lindex])
         .$promise.then(function(response){
             console.log(response);
+            $scope.learningPointUpdateFlag[tindex][lindex] = false;
         },
         function(response){
             console.log(response);
@@ -62,9 +80,23 @@ angular.module('clientApp')
     };
     
     //for updating all the content together
-    $scope.submitContent = function() {
-        $state.go('teacher-dashboard');
+    $scope.saveAll = function() {
+        for (var tindex = 0; tindex < $scope.module.topics.length; tindex++) {
+            for (var lindex = 0; lindex < $scope.module.topics[tindex].length; lindex++) {
+                if (learningPointUpdateFlag[tindex][lindex] === true) {
+                    $scope.updateContent(tindex, lindex); //this function involves asynchronous operations
+                }
+            }
+        }
+
     };
+
+    $scope.saveAndContinue = function() {
+        //Question: Is this legal?
+        $scope.saveAll()
+        
+        
+    }
 
     //BrainStormingSession Functions
     $scope.openClosedPoint = function(index) {
