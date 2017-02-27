@@ -11,7 +11,7 @@ angular.module('clientApp', [
   ])
 
 
-.constant('baseUrl', 'http://ec2-54-172-201-85.compute-1.amazonaws.com:3000/')
+.constant('baseUrl', 'http://ec2-52-21-109-49.compute-1.amazonaws.com/')
 
 
 .config(function($provide){
