@@ -1,7 +1,7 @@
 'use strict';
 
 //http://localhost:3000/
-//http://ec2-54-172-201-85.compute-1.amazonaws.com:3000/
+//http://ec2-52-21-109-49.compute-1.amazonaws.com/
 
 angular.module('clientApp', [
     'ngDialog',
