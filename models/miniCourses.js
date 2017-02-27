@@ -16,7 +16,26 @@ var miniCourseSchema = new Schema({
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    description: {
+        type: String
+    },
+    requirements: {
+        type: String
+    },
+    learningDeliverables: {
+        type: String
+    },
+    targetAudience: {
+        type: String
+    },
+    learningApproach: {
+        type: String
+    },
+    sections: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Section'
+    }]
 }, {timestamps: true});
 
 var MiniCourses = mongoose.model('MiniCourse', miniCourseSchema);

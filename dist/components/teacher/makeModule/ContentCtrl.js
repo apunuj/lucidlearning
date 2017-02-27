@@ -2,7 +2,7 @@
 
 angular.module('clientApp')
 
-.controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory) {
+.controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', '$q', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory, $q) {
     $scope.module = moduleFactory.get({id: $stateParams.id})
     .$promise.then(function(response){
         $scope.module = response;
@@ -51,6 +51,7 @@ angular.module('clientApp')
         console.log(response.status);
     });
 
+
     //function for updating symbols used in the editors
     var symbolize = function(str) {
         function convert(match) {
@@ -58,18 +59,25 @@ angular.module('clientApp')
         }
         return str.replace(/&amp;\S/g, convert);
     };
+
+    //function that returns the promise of updating the content of a learning point
+    $scope.saveOne = function(tindex, lindex) {
+        $scope.module.topics[tindex].learningPoints[lindex].content = symbolize($scope.module.topics[tindex].learningPoints[lindex].content);
+        return learningPointFactory.update({
+            id: $stateParams.id,
+            tid: $scope.module.topics[tindex]._id,
+            lid: $scope.module.topics[tindex].learningPoints[lindex]._id
+        }, $scope.module.topics[tindex].learningPoints[lindex]).$promise;
+    };
+
     
     //for updating the content of individual learning points and refreshing the symbols
     $scope.updateContent = function(tindex, lindex) {
         
         //$scope.module.topics[tindex].learningPoints[lindex].content = $scope.module.topics[tindex].learningPoints[lindex].content + html;
-        $scope.module.topics[tindex].learningPoints[lindex].content = symbolize($scope.module.topics[tindex].learningPoints[lindex].content);
-        learningPointFactory.update({
-            id: $stateParams.id,
-            tid: $scope.module.topics[tindex]._id,
-            lid: $scope.module.topics[tindex].learningPoints[lindex]._id
-        }, $scope.module.topics[tindex].learningPoints[lindex])
-        .$promise.then(function(response){
+        console.log($scope.saveOne(tindex, lindex))
+        $scope.saveOne(tindex, lindex)
+        .then(function(response){
             console.log(response);
             $scope.learningPointUpdateFlag[tindex][lindex] = false;
         },
@@ -81,22 +89,26 @@ angular.module('clientApp')
     
     //for updating all the content together
     $scope.saveAll = function() {
-        for (var tindex = 0; tindex < $scope.module.topics.length; tindex++) {
-            for (var lindex = 0; lindex < $scope.module.topics[tindex].length; lindex++) {
-                if (learningPointUpdateFlag[tindex][lindex] === true) {
-                    $scope.updateContent(tindex, lindex); //this function involves asynchronous operations
-                }
-            }
-        }
+         var defer = $q.defer();
+         var promises = [];
+         for (var tindex = 0; tindex < $scope.module.topics.length; tindex++) {
+             for (var lindex = 0; lindex < $scope.module.topics[tindex].learningPoints.length; lindex++) {
+                 promises.push($scope.saveOne(tindex, lindex));
+             }
+         }
+         $q.all(promises).then(console.log(promises));
 
+         return defer.promise;
     };
 
     $scope.saveAndContinue = function() {
         //Question: Is this legal?
         $scope.saveAll()
-        
-        
-    }
+        .then(function(){
+            $state.go('teacher-dashboard');
+        });
+          
+    };
 
     //BrainStormingSession Functions
     $scope.openClosedPoint = function(index) {

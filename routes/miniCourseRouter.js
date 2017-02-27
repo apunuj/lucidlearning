@@ -5,6 +5,7 @@ var async = require('async');
 
 var Modules = require('../models/modules');
 var MiniCourses = require('../models/miniCourses')
+var Sections = require('../models/sections')
 
 var Verify = require('./verify');
 
@@ -14,6 +15,8 @@ miniCourseRouter.route('/')
     MiniCourses.find(req.query).populate({
         path: 'modules',
         select: 'name'
+    }).populate({
+        path: 'sections'
     }).exec(function(err, miniCourses){
         if (err){
             next(err);
@@ -43,6 +46,8 @@ miniCourseRouter.route('/:id')
     MiniCourses.findById(req.params.id).populate({
         path: 'modules',
         select: 'name'
+    }).populate({
+        path: 'sections'
     }).exec(function(err, miniCourse){
         if (err){
             next(err);

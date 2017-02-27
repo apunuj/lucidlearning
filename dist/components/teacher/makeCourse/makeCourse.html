@@ -1,10 +1,10 @@
 <div class="container">
     <div class="row">
        
-        <div class="col-xs-12 col-sm-4 affix" style ="background-color:#FDFEFE">
+        <div class="col-xs-12 col-sm-7" style ="background-color:#FDFEFE">
             <div class="row">
                 <div class="btn-info" style="height:100px;">
-                    <h3>New Mini-Course:</h3>
+                    <h3>Step 1: Give your mini-course a name and and add modules into it from the module-list</h3>
                 </div>
             </div>
             <div class="row">
@@ -37,14 +37,79 @@
                 </div>
                 <div class="col-xs-12">
                     <p style="padding:5px;"></p>
+                     <hr>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="btn-info" style="height:100px;">
+                    <h3>Step 2: Categorize the modules of your mini-course into sections:</h3>
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="list-group">
+                        <div class="list-group-item" ng-repeat="section in miniCourse.sections" ng-init="parentIndex=$index">
+                            
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div ng-show="!section.sectionEditToggle">
+                                        <button class="btn btn-xs btn-default pull-right" style="color:#5bc0de;" ng-click="editSectionName($index)">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <h4>
+                                            Section {{$index+1}}:&nbsp;{{section.name | capitalize:true}}
+                                        </h4>
+                                    </div>
+                                    <div ng-show="section.sectionEditToggle">
+                                        <form class="form" ng-submit="updateSectionName($index)">
+                                            <input type="text" class="input-md col-xs-8" ng-model="section.name"> 
+                                        </form>
+                                        <p style="padding:5px;"></p>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>Module List:&nbsp;<small><button class="btn btn-xs btn-default" style="color:#5bc0de;" ng-click="openAddModulesDialog($index)">Add Modules</button></small></h4>
+                                    <ul class="list-group" ng-show="section.modules.length > 0">
+                                        <li class="list-group-item" ng-repeat="module in section.modules">
+                                            <button class="btn btn-xs btn-default pull-right" style="color:#5bc0de;" ng-click="deleteModuleFromSection(parentIndex, $index)"><i class="fa fa-times"></i></button>
+                                            {{findModuleNameById(module)}}
+                                        </li>
+                                    </ul>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>Description:&nbsp;<small><button class="btn btn-xs btn-default" style="color:#5bc0de;" ng-click="updateSectionDescription($index)">Update Description</button></small></h4>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                   <p class="topic-name"> <button ng-click="addNewSection()" class="btn btn-xs btn-default"><i class="fa fa-plus"></i></button>&nbsp;New Section</p>
+                </div>  
+                <div class="col-xs-12">         
+                    <form class="form" ng-submit="addSectionName()">
+                        <p ng-show="toggleSectionForm">
+                        <input type="text" class="input-md col-xs-8" placeholder="Enter New Section Name" ng-model="newSectionName">
+                        </p>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-sm-offset-6" style ="background-color:#FDFEFE">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-1" style ="background-color:#FDFEFE">
             <div class="row">
                 <div class="btn-info" style="height:100px;">
-                    <h3> Pick modules to include in the mini-course from here:</h3>
+                    <h3> #ModuleList</h3>
                 </div>
                 <div class="col-xs-12">
                     <ul class="list-unstyled">

@@ -1,0 +1,16 @@
+<div>
+    <div class="ngdialog-message">
+        <div class="">
+            Select modules to include in this section:
+        </div>
+        <div class="" class="list-group">
+            <li class="list-group-item" ng-repeat="module in $scope.availableModuleObjects">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="module.isSelected" ng-click="selectModule($index)"> {{module.name}}
+                    </label>
+                </div>
+            </li>
+        </div>
+    </div>
+</div>

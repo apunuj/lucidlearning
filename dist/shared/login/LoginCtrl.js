@@ -20,4 +20,4 @@ angular.module('clientApp')
         ngDialog.open({ template: 'shared/Signup/signup.html', scope: $scope, className: 'ngdialog-theme-default', controller:"RegisterController" });
     };
     
-}])
+}]);
