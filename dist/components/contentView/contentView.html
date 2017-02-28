@@ -9,7 +9,7 @@
             <h2 class="topic-name">{{topicObject.name | capitalize:true}}</h2>
             <hr>
             <div ng-repeat="learningPointObject in topicObject.learningPoints track by $index">
-                <h2>{{learningPointObject.name | capitalize}}</h2>
+                <h3>{{learningPointObject.name | capitalize}}</h3>
                 <div ta-bind="text" ng-model="learningPointObject.content"></div>
                 <hr>
             </div>
