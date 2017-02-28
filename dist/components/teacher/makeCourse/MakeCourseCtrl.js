@@ -22,7 +22,7 @@ angular.module('clientApp')
     $scope.editSectionDescription = editSectionDescription;
     $scope.updateSectionDescription = updateSectionDescription;
     $scope.openAddModulesDialog = openAddModulesDialog;
-   // $scope.deleteModuleFromSection = deleteModuleFromSection;
+    $scope.deleteModuleFromSection = deleteModuleFromSection;
 
     //3. functions for course-descriptions
     //$scope.updateCourseDescription = updateCourseDescription;
@@ -64,6 +64,23 @@ angular.module('clientApp')
         }
     }
 
+    //4. building section module name array
+    function getSectionModuleNameArray() {
+        var sectionModuleNameArray = [];
+        for (var sindex = 0; sindex < $scope.miniCourse.sections.length; sindex++) {
+            sectionModuleNameArray.push([]);
+            for (var mindex = 0; mindex < $scope.miniCourse.sections[sindex].modules.length; mindex++) {
+                for (var index = 0; index < $scope.miniCourse.modules.length; index++) {
+                    if ($scope.miniCourse.sections[sindex].modules[mindex] === $scope.miniCourse.modules[index]._id) {
+                        sectionModuleNameArray[sindex].push($scope.miniCourse.modules[index].name);
+                    }
+                }
+            }
+        }
+
+        return sectionModuleNameArray;
+    };
+
 
 
     ////////////////////////////////////////
@@ -86,12 +103,16 @@ angular.module('clientApp')
         for (var index = 0; index < $scope.miniCourse.modules.length; index++) {
             $scope.moduleIdArray.push($scope.miniCourse.modules[index]._id);
         }
+
         $scope.sectionIdArray = [];
         for (var index = 0; index < $scope.miniCourse.sections.length; index++) {
             $scope.sectionIdArray.push($scope.miniCourse.sections[index]._id);
         }
         $scope.toggleSectionForm = false;
         $scope.newSectionName = '';
+
+        $scope.sectionModuleNameArray = getSectionModuleNameArray();
+
 
         for (var sindex = 0; sindex < $scope.miniCourse.sections.length; sindex++) {
             $scope.miniCourse.sections[sindex].sectionEditToggle = false;
@@ -206,8 +227,12 @@ angular.module('clientApp')
     };
 
     function openAddModulesDialog(sindex) {
-        ngDialog.open({template:'components/teacher/makeCourse/addModulesToSection.html', data: {miniCourseId:$scope.miniCourse._id, sectionIndex:sindex}, scope: $scope, className: 'ngdialog-theme-default', controller: 'AddModulesToSectionCtrl'});
+        ngDialog.open({template:'components/teacher/makeCourse/addModulesToSection.html', data: {miniCourseId:$scope.miniCourse._id, sectionIndex:sindex, parentSection:$scope.miniCourse.sections[sindex]}, scope: $scope, className: 'ngdialog-theme-default', controller: 'AddModulesToSectionCtrl'});
     };
+
+    function deleteModuleFromSection(sindex, mindex) {
+        sectionFactory.update
+    }
 
     
 }]);

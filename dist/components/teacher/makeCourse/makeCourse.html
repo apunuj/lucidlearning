@@ -49,7 +49,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="list-group">
-                        <div class="list-group-item" ng-repeat="section in miniCourse.sections" ng-init="parentIndex=$index">
+                        <div class="list-group-item" ng-repeat="section in miniCourse.sections" ng-init="parentIndex = $index; sectionModuleNameArray = $parent.sectionModuleNameArray">
                             
                             <div class="row">
                                 <div class="col-xs-12">
@@ -76,7 +76,7 @@
                                     <ul class="list-group" ng-show="section.modules.length > 0">
                                         <li class="list-group-item" ng-repeat="module in section.modules">
                                             <button class="btn btn-xs btn-default pull-right" style="color:#5bc0de;" ng-click="deleteModuleFromSection(parentIndex, $index)"><i class="fa fa-times"></i></button>
-                                            {{findModuleNameById(module)}}
+                                            {{sectionModuleNameArray[parentIndex][$index]}}
                                         </li>
                                     </ul>
                                     <hr>
