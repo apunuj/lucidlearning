@@ -10,7 +10,7 @@ var MiniCourses = require('../models/miniCourses')
 var Verify = require('./verify');
 
 miniCourseRouter.route('/')
-.get(Verify.verifyLearner, Verify.verifyTeacher, function (req, res, next){
+.get(Verify.verifyLearner, function (req, res, next){
     console.log(req.query.modules);
     MiniCourses.find(req.query).populate({
         path: 'modules',
@@ -40,7 +40,7 @@ miniCourseRouter.route('/')
 });
 
 miniCourseRouter.route('/:id')
-.get(Verify.verifyLearner, Verify.verifyTeacher, function (req, res, next){
+.get(Verify.verifyLearner, function (req, res, next){
     MiniCourses.findById(req.params.id).populate({
         path: 'modules',
         select: 'name'
@@ -73,7 +73,7 @@ miniCourseRouter.route('/:id')
 });
 
 miniCourseRouter.route('/:id/modules')
-.get(Verify.verifyLearner, Verify.verifyTeacher, function (req, res, next){
+.get(Verify.verifyLearner, function (req, res, next){
     MiniCourses.findById(req.params.id).populate({
         path: 'modules'
     }).exec(function(err, miniCourse){
@@ -99,7 +99,7 @@ miniCourseRouter.route('/:id/modules')
 });
 
 miniCourseRouter.route('/:id/modules/:mid')
-.delete(Verify.verifyLearner, Verify.verifyTeacher, function (req, res, next){
+.delete(Verify.verifyLearner, function (req, res, next){
     MiniCourses.findById(req.params.id, function(err, miniCourse){
         miniCourse.modules.splice(miniCourse.modules.indexOf(req.params.mid),1);
         miniCourse.save(function(err, savedMiniCourse){

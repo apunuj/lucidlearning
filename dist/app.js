@@ -1,7 +1,9 @@
 'use strict';
 
 //http://localhost:3000/
-//http://ec2-35-154-158-206.ap-south-1.compute.amazonaws.com:3000/
+
+//http://ec2-35-154-183-140.ap-south-1.compute.amazonaws.com:80/
+
 
 angular.module('clientApp', [
     'ngDialog',
@@ -11,7 +13,7 @@ angular.module('clientApp', [
   ])
 
 
-.constant('baseUrl', 'http://ec2-35-154-158-206.ap-south-1.compute.amazonaws.com:3000/')
+.constant('baseUrl', 'http://ec2-35-154-183-140.ap-south-1.compute.amazonaws.com:80/')
 
 
 .config(function($provide){
