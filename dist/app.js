@@ -100,16 +100,30 @@ angular.module('clientApp', [
         }
     })
 
-    .state('existingModules', {
-        url: '/existingModules',
+    .state('finishedModules', {
+        url: '/finishedModules/:id',
         views: {
             'navbar': {
                 templateUrl: 'shared/navbar/navBarView.html',
                 controller: 'NavBarCtrl'
             },
             'body': {
-                templateUrl: 'components/teacher/dashboard/existingModules.html',
-                controller: 'ExistingModulesCtrl'
+                templateUrl: 'components/teacher/dashboard/finishedModules.html',
+                controller: 'FinishedModulesCtrl'
+            }
+        }
+    })
+
+     .state('unfinishedModules', {
+        url: '/unfinishedModules/:id',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/teacher/dashboard/unfinishedModules.html',
+                controller: 'UnfinishedModulesCtrl'
             }
         }
     })
@@ -166,6 +180,20 @@ angular.module('clientApp', [
             'body': {
                 templateUrl: 'components/learner/viewCourse/viewCourse.html',
                 controller: 'ViewCourseCtrl'
+            }
+        }
+    })
+
+    .state('moderatorActions', {
+        url: '/moderatorActions/:id',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'components/teacher/dashboard/moderatorActions.html',
+                controller: 'ModeratorActionsCtrl'
             }
         }
     })

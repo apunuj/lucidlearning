@@ -1,13 +1,13 @@
 <div style ="background-color:#FDFEFE" class="col-xs-12 col-sm-8">
     <blockquote>
-        Here's a list of existing modules. Pick one, and start editing:
+        Here's a list of unfinished modules. Pick one, and start editing:
     </blockquote>
     <div class = "list-group">
         <li class="list-group-item" ng-repeat="module in modules">
             <a ui-sref="createModule({id: module._id})">
                 {{module.name}}
             </a>
-            <button class="btn btn-xs btn-default pull-right" ng-click="remove(module._id)">
+            <button ng-show="user.moderator" class="btn btn-xs btn-default pull-right" ng-click="remove(module._id)">
                 <i class="fa fa-times-circle"></i>
             </button>
         </li>

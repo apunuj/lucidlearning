@@ -16,6 +16,14 @@ var moduleSchema = new Schema({
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    reviewRequested: {
+        type: Boolean,
+        default: false
+    },
+    approved: {
+        type: Boolean,
+        default: false
     }
 }, {timestamps: true});
 

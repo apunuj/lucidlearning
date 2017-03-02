@@ -2,15 +2,16 @@
 
 angular.module('clientApp')
 
-.controller('ExistingModulesCtrl', ['$scope', '$state', 'moduleFactory', 'AuthFactory', function($scope, $state, moduleFactory, AuthFactory){
+.controller('FinishedModulesCtrl', ['$scope', '$state', 'moduleFactory', 'AuthFactory', function($scope, $state, moduleFactory, AuthFactory){
     
-    var user = AuthFactory.getUserDetails();
+    $scope.user = AuthFactory.getUserDetails();
 
-    if (user.admin) {
+    if ($scope.user.moderator) {
         var filter = {};
     } else {
         var filter = {
-            createdBy: user._id
+            createdBy: $scope.user._id,
+            approved: true
         }
     }
 

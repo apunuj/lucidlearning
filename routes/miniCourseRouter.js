@@ -6,6 +6,7 @@ var async = require('async');
 var Modules = require('../models/modules');
 var MiniCourses = require('../models/miniCourses')
 
+
 var Verify = require('./verify');
 
 miniCourseRouter.route('/')

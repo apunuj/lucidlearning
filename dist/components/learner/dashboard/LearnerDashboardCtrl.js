@@ -1,6 +1,6 @@
 angular.module ('clientApp')
 
-.controller('LearnerDashboardCtrl', ['$scope','$state', '$stateParams', 'miniCourseFactory', 'moduleFactory', function($scope, $state, $stateParams, miniCourseFactory, moduleFactory){
+.controller('LearnerDashboardCtrl', ['$scope','$state', '$stateParams', 'miniCourseFactory', 'moduleFactory', 'ngDialog', function($scope, $state, $stateParams, miniCourseFactory, moduleFactory, ngDialog){
    
     $scope.modules = moduleFactory.query()
     .$promise.then(function(response){
@@ -13,5 +13,10 @@ angular.module ('clientApp')
         });
     }, function(response) {
         console.log(response.status);
-    })
+    });
+
+    $scope.openModuleListPopUp = function(id) {
+         ngDialog.open({ template: 'components/learner/viewCourse/moduleListPopUp.html', data: {miniCourseId: id}, scope: $scope, className: 'ngdialog-theme-default', controller:"ModuleListPopUpCtrl" });
+    };
+
 }]);

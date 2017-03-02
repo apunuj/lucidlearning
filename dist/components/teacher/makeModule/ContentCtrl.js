@@ -2,10 +2,30 @@
 
 angular.module('clientApp')
 
-.controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory) {
+.controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', '$q', 'AuthFactory', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory, $q, AuthFactory) {
+    
+    $scope.user = AuthFactory.getUserDetails();
+    
     $scope.module = moduleFactory.get({id: $stateParams.id})
     .$promise.then(function(response){
         $scope.module = response;
+
+        $scope.learningPointUpdateFlag = [];
+        for (var tindex = 0; tindex < $scope.module.topics.length; tindex++) {
+            $scope.learningPointUpdateFlag.push([]);
+            for (var lindex = 0; lindex <$scope.module.topics[tindex].learningPoints.length; lindex++) {
+                $scope.learningPointUpdateFlag[tindex].push(false);
+                $scope.$watch('$scope.module.topics[tindex].learningPoints[lindex]', function(newValue, oldValue){
+                    for (var tindex = 0; tindex < $scope.module.topics.length; tindex++) {
+                        var lindex = $scope.module.topics[tindex].learningPoints.indexOf(newValue);
+                        if (lindex > -1) {
+                            $scope.learningPointUpdateFlag[tindex][lindex] = true;
+                        }
+                    }
+                    
+                });
+            }
+        }
 
         //initializing the brainstorming session
         $scope.brainStormingSession = brainStormingSessionFactory.query({moduleId:response._id})
@@ -34,6 +54,7 @@ angular.module('clientApp')
         console.log(response.status);
     });
 
+
     //function for updating symbols used in the editors
     var symbolize = function(str) {
         function convert(match) {
@@ -41,19 +62,27 @@ angular.module('clientApp')
         }
         return str.replace(/&amp;\S/g, convert);
     };
+
+    //function that returns the promise of updating the content of a learning point
+    $scope.saveOne = function(tindex, lindex) {
+        $scope.module.topics[tindex].learningPoints[lindex].content = symbolize($scope.module.topics[tindex].learningPoints[lindex].content);
+        return learningPointFactory.update({
+            id: $stateParams.id,
+            tid: $scope.module.topics[tindex]._id,
+            lid: $scope.module.topics[tindex].learningPoints[lindex]._id
+        }, $scope.module.topics[tindex].learningPoints[lindex]).$promise;
+    };
+
     
     //for updating the content of individual learning points and refreshing the symbols
     $scope.updateContent = function(tindex, lindex) {
         
         //$scope.module.topics[tindex].learningPoints[lindex].content = $scope.module.topics[tindex].learningPoints[lindex].content + html;
-        $scope.module.topics[tindex].learningPoints[lindex].content = symbolize($scope.module.topics[tindex].learningPoints[lindex].content);
-        learningPointFactory.update({
-            id: $stateParams.id,
-            tid: $scope.module.topics[tindex]._id,
-            lid: $scope.module.topics[tindex].learningPoints[lindex]._id
-        }, $scope.module.topics[tindex].learningPoints[lindex])
-        .$promise.then(function(response){
+        console.log($scope.saveOne(tindex, lindex))
+        $scope.saveOne(tindex, lindex)
+        .then(function(response){
             console.log(response);
+            $scope.learningPointUpdateFlag[tindex][lindex] = false;
         },
         function(response){
             console.log(response);
@@ -62,8 +91,28 @@ angular.module('clientApp')
     };
     
     //for updating all the content together
-    $scope.submitContent = function() {
-        $state.go('teacher-dashboard');
+    $scope.saveAll = function() {
+         var defer = $q.defer();
+         var promises = [];
+         for (var tindex = 0; tindex < $scope.module.topics.length; tindex++) {
+             for (var lindex = 0; lindex < $scope.module.topics[tindex].learningPoints.length; lindex++) {
+                 promises.push($scope.saveOne(tindex, lindex));
+             }
+         }
+         $q.all(promises).then(function(){
+             defer.resolve();
+         });
+
+         return defer.promise;
+    };
+
+    $scope.saveAndClose = function() {
+        //Question: Is this legal?
+        $scope.saveAll()
+        .then(function(){
+            $state.go('teacher-dashboard');
+        });
+          
     };
 
     //BrainStormingSession Functions
@@ -100,6 +149,58 @@ angular.module('clientApp')
         updateBrainStormingSession();
     };
 
+    $scope.approveModule = function() {
+        $scope.saveAll()
+        .then(function(response){
+            moduleFactory.update({id:$stateParams.id}, {reviewRequested: true, approved: true})
+            .$promise.then(function(response) {
+                $state.go('moderatorActions',{id:$scope.user._id}); 
+
+            }, function(response) {
+                console.log(response.status);
+            });
+        })
+    };
+
+    $scope.rejectModule = function() {
+        $scope.saveAll()
+        .then(function(response){
+             moduleFactory.update({id:$stateParams.id}, {reviewRequested: false, approved: false})
+            .$promise.then(function(response) {
+                $state.go('moderatorActions',{id:$scope.user._id});
+
+            }, function(response) {
+                console.log(response.status);
+            })
+        }); 
+    };
+
+    $scope.editStructure = function() {
+        $scope.saveAll()
+        .then(function(response) {
+            $state.go('createModule', {id:$scope.module._id});
+        });
+    };
+
+    $scope.preview = function() {
+        $scope.saveAll()
+        .then(function(response) {
+            $state.go('viewModule', {id:$scope.module._id});
+        });
+    };
+
+    $scope.requestReview = function() {
+        $scope.saveAll()
+        .then(function(response) {
+            moduleFactory.update({id:module._id}, {reviewRequested: true, approved: false})
+            .$promise.then(function(response){
+                console.log('Review Requested'+response);
+            }, function(response) {
+                console.log(response.status);
+            })
+        })
+    }
+
     var updateBrainStormingSession = function(){
        var pointsArray = [];
        for (var index = 0; index < $scope.brainStormingSession.points.length; index++) {
@@ -112,5 +213,7 @@ angular.module('clientApp')
            console.log(response.status);
        })
     };
+
+
     
 }]);
