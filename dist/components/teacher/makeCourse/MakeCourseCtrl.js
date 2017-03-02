@@ -14,21 +14,7 @@ angular.module('clientApp')
     $scope.deleteMiniCourse = deleteMiniCourse;
     $scope.selectModule = selectModule;
 
-    //2. functions for sections
-    $scope.addNewSection = addNewSection;
-    $scope.addSectionName = addSectionName;
-    $scope.editSectionName = editSectionName;
-    $scope.updateSectionName = updateSectionName;
-    $scope.editSectionDescription = editSectionDescription;
-    $scope.updateSectionDescription = updateSectionDescription;
-    $scope.openAddModulesDialog = openAddModulesDialog;
-    $scope.deleteModuleFromSection = deleteModuleFromSection;
 
-    //3. functions for course-descriptions
-    //$scope.updateCourseDescription = updateCourseDescription;
-
-
-    
     /////////////////////
     //helper functions//
     ///////////////////
@@ -44,45 +30,7 @@ angular.module('clientApp')
         });
     };
 
-    //2. update minicoursewithsectionIds
-    function updateMiniCourseWithSections(cb) {
-        miniCourseFactory.update({id: $stateParams.id}, {sections: $scope.sectionIdArray})
-        .$promise.then(function(response) {
-            console.log("update done");
-            cb();
-        }, function(response) {
-            console.log(response.status);
-        });
-    };
-
-    //3. finding module name given id for populating module names in sections
-    function findModuleNameById (mid) {
-        for (var index = 0; index < $scope.miniCourse.modules.length; index++) {
-            if(mid === $scope.miniCourse.modules[index]._id) {
-                return $scope.miniCourse.modules[index].name;
-            }
-        }
-    }
-
-    //4. building section module name array
-    function getSectionModuleNameArray() {
-        var sectionModuleNameArray = [];
-        for (var sindex = 0; sindex < $scope.miniCourse.sections.length; sindex++) {
-            sectionModuleNameArray.push([]);
-            for (var mindex = 0; mindex < $scope.miniCourse.sections[sindex].modules.length; mindex++) {
-                for (var index = 0; index < $scope.miniCourse.modules.length; index++) {
-                    if ($scope.miniCourse.sections[sindex].modules[mindex] === $scope.miniCourse.modules[index]._id) {
-                        sectionModuleNameArray[sindex].push($scope.miniCourse.modules[index].name);
-                    }
-                }
-            }
-        }
-
-        return sectionModuleNameArray;
-    };
-
-
-
+  
     ////////////////////////////////////////
     //Fetching factory data into the model//
     ////////////////////////////////////////
@@ -102,21 +50,6 @@ angular.module('clientApp')
         $scope.moduleIdArray = [];
         for (var index = 0; index < $scope.miniCourse.modules.length; index++) {
             $scope.moduleIdArray.push($scope.miniCourse.modules[index]._id);
-        }
-
-        $scope.sectionIdArray = [];
-        for (var index = 0; index < $scope.miniCourse.sections.length; index++) {
-            $scope.sectionIdArray.push($scope.miniCourse.sections[index]._id);
-        }
-        $scope.toggleSectionForm = false;
-        $scope.newSectionName = '';
-
-        $scope.sectionModuleNameArray = getSectionModuleNameArray();
-
-
-        for (var sindex = 0; sindex < $scope.miniCourse.sections.length; sindex++) {
-            $scope.miniCourse.sections[sindex].sectionEditToggle = false;
-            $scope.miniCourse.sections[sindex].descriptionEditToggle = false;
         }
   
         $scope.modules = moduleFactory.query()
@@ -181,58 +114,5 @@ angular.module('clientApp')
             console.log(response.status);
         })
     };
-
-    function addNewSection() {
-        $scope.toggleSectionForm = !$scope.toggleSectionForm;
-    };
-
-    function addSectionName() {
-        console.log($scope.newSectionName);
-        sectionFactory.save({name: $scope.newSectionName, modules:[], description:''})
-        .$promise.then(function(savedSection) {
-            $scope.sectionIdArray.push(savedSection._id);
-            updateMiniCourseWithSections(function(){
-                $scope.miniCourse.sections.push(savedSection);
-                $scope.newSectionName = '';
-            }); 
-        }, function(response) {
-            console.log(response.status);
-        });
-    };
-
-    function editSectionName(sindex) {
-        $scope.miniCourse.sections[sindex].sectionEditToggle = !$scope.miniCourse.sections[sindex].sectionEditToggle;
-    };
-
-    function updateSectionName(sindex) {
-        sectionFactory.update({id: $scope.miniCourse.sections[sindex]._id}, {name: $scope.miniCourse.sections[sindex].name})
-        .$promise.then(function(response) {
-            editSectionName(sindex);
-        }, function(response) {
-            console.log(response.status);
-        });
-    };
-
-    function editSectionDescription(sindex) {
-        $scope.miniCourse.sections[sindex].descriptionEditToggle = !$scope.miniCourse.sections[sindex].descriptionEditToggle;
-    };
-
-    function updateSectionDescription(sindex) {
-        sectionFactory.update({id: $scope.miniCourse.sections[sindex]._id}, {description: $scope.miniCourse.sections[sindex].description})
-        .$promise.then(function(response) {
-            editSectionDescription(sindex);
-        }, function(response) {
-            console.log(response.status);
-        });
-    };
-
-    function openAddModulesDialog(sindex) {
-        ngDialog.open({template:'components/teacher/makeCourse/addModulesToSection.html', data: {miniCourseId:$scope.miniCourse._id, sectionIndex:sindex, parentSection:$scope.miniCourse.sections[sindex]}, scope: $scope, className: 'ngdialog-theme-default', controller: 'AddModulesToSectionCtrl'});
-    };
-
-    function deleteModuleFromSection(sindex, mindex) {
-        sectionFactory.update
-    }
-
-    
+  
 }]);

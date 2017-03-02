@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row">
+        <h1 class="module-name"> Modules Pending Approval:</h1>
+        <hr>
+    </div>
+
+    <div class="col-xs-4" ng-repeat="module in modules">
+        <div class="tile">
+            <div class="row" style="background-color:#5cb85c;">
+                <p style="padding:5px;"></p>
+                <div style="text-align:center;"><a ui-sref="viewModule({id:module._id})"><i class="fa fa-map-o fa-2x link-icon" style="color:white;"></i></a></div>
+                <p style="padding:5px;"></p>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4 class="title">{{module.name}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <p style="padding:10px;"></p>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <button class="btn btn-xs btn-default" ui-sref="viewModule({id:module._id})" style="color: #337ab7; vertical-align: center;"> Read </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

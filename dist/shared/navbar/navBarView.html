@@ -22,14 +22,14 @@
                      <i class="fa fa-envelope-o"></i> Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-if="!loggedIn"><a ng-click="openLogin()">
+                    <li ng-if="!loggedIn"><a ng-click="openLogin()" style="cursor:pointer;">
                     <span class="glyphicon glyphicon-log-in"></span> Login</a>
                     </li>
                     <li ng-if="loggedIn">
                     <a>{{email}}</a>
                     </li>
                     <li ng-if="loggedIn">
-                    <a ng-click="logOut()">
+                    <a ng-click="logOut()" style="cursor:pointer;">
                     <span class="glyphicon glyphicon-log-in"></span> Logout</a>
                     </li>
                 </ul>

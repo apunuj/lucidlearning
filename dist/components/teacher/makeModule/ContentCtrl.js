@@ -2,7 +2,10 @@
 
 angular.module('clientApp')
 
-.controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', '$q', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory, $q) {
+.controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', '$q', 'AuthFactory', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory, $q, AuthFactory) {
+    
+    $scope.user = AuthFactory.getUserDetails();
+    
     $scope.module = moduleFactory.get({id: $stateParams.id})
     .$promise.then(function(response){
         $scope.module = response;
@@ -96,12 +99,14 @@ angular.module('clientApp')
                  promises.push($scope.saveOne(tindex, lindex));
              }
          }
-         $q.all(promises).then(console.log(promises));
+         $q.all(promises).then(function(){
+             defer.resolve();
+         });
 
          return defer.promise;
     };
 
-    $scope.saveAndContinue = function() {
+    $scope.saveAndClose = function() {
         //Question: Is this legal?
         $scope.saveAll()
         .then(function(){
@@ -144,6 +149,58 @@ angular.module('clientApp')
         updateBrainStormingSession();
     };
 
+    $scope.approveModule = function() {
+        $scope.saveAll()
+        .then(function(response){
+            moduleFactory.update({id:$stateParams.id}, {reviewRequested: true, approved: true})
+            .$promise.then(function(response) {
+                $state.go('moderatorActions',{id:$scope.user._id}); 
+
+            }, function(response) {
+                console.log(response.status);
+            });
+        })
+    };
+
+    $scope.rejectModule = function() {
+        $scope.saveAll()
+        .then(function(response){
+             moduleFactory.update({id:$stateParams.id}, {reviewRequested: false, approved: false})
+            .$promise.then(function(response) {
+                $state.go('moderatorActions',{id:$scope.user._id});
+
+            }, function(response) {
+                console.log(response.status);
+            })
+        }); 
+    };
+
+    $scope.editStructure = function() {
+        $scope.saveAll()
+        .then(function(response) {
+            $state.go('createModule', {id:$scope.module._id});
+        });
+    };
+
+    $scope.preview = function() {
+        $scope.saveAll()
+        .then(function(response) {
+            $state.go('viewModule', {id:$scope.module._id});
+        });
+    };
+
+    $scope.requestReview = function() {
+        $scope.saveAll()
+        .then(function(response) {
+            moduleFactory.update({id:module._id}, {reviewRequested: true, approved: false})
+            .$promise.then(function(response){
+                console.log('Review Requested'+response);
+            }, function(response) {
+                console.log(response.status);
+            })
+        })
+    }
+
     var updateBrainStormingSession = function(){
        var pointsArray = [];
        for (var index = 0; index < $scope.brainStormingSession.points.length; index++) {
@@ -156,5 +213,7 @@ angular.module('clientApp')
            console.log(response.status);
        })
     };
+
+
     
 }]);

@@ -4,13 +4,13 @@ angular.module('clientApp')
 
 .controller('TeacherDashboardCtrl', ['$scope','$state','moduleFactory','brainStormingSessionFactory','miniCourseFactory','AuthFactory',function($scope, $state, moduleFactory, brainStormingSessionFactory, miniCourseFactory, AuthFactory){
 
-    var user = AuthFactory.getUserDetails();
+    $scope.user = AuthFactory.getUserDetails();
 
-    if (user.admin) {
+    if ($scope.user.moderator) {
         var filter = {};
     } else {
         var filter = {
-            createdBy: user._id
+            createdBy: $scope.user._id
         }
     }
 
@@ -22,7 +22,7 @@ angular.module('clientApp')
     });
 
     $scope.initializeModule = function(){
-        moduleFactory.save({name: '', topics: [], createdBy: user._id})
+        moduleFactory.save({name: '', topics: [], createdBy: $scope.user._id})
         .$promise.then(function(module){
             initializeBrainStormingSession(module._id);
         }, function(error){
@@ -40,7 +40,7 @@ angular.module('clientApp')
     };
 
     $scope.initializeMiniCourse = function(){
-        miniCourseFactory.save({name: '', modules: [], createdBy: user._id})
+        miniCourseFactory.save({name: '', modules: [], createdBy: $scope.user._id})
         .$promise.then(function(miniCourse){
             console.log(miniCourse);
             $state.go('makeCourse', {id:miniCourse._id});

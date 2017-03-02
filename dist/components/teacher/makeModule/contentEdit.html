@@ -12,8 +12,15 @@
                 <div class="col-xs-12">
                     <h3 class="module-name" style="text-align: center;">
                         {{module.name | capitalize:true}}&nbsp;
-                        <button class="btn btn-xs btn-default" ui-sref="createModule({id:module._id})" style="color: #337ab7; vertical-align: center;"> Edit Structure </button>
-                        </h3>
+                    </h3>
+                    <div class="text-center">
+                        <div class="btn-group">
+                            <button class="btn btn-xs btn-default" ng-click="editStructure()" style="color: #337ab7; vertical-align: center; cursor:pointer;"> Edit Structure </button>&nbsp;
+                            <button ng-show="user.moderator" class="btn btn-xs btn-default" ng-click="approveModule()" style="color: #337ab7; vertical-align: center; cursor: pointer;"> Approve Module </button>&nbsp;
+                            <button ng-show="user.moderator" class="btn btn-xs btn-default" ng-click="rejectModule()" style="color: #337ab7; vertical-align: center; cursor: pointer;"> Reject Module </button>&nbsp;
+                            <button class="btn btn-xs btn-default" ng-click="preview()" style="color: #337ab7; vertical-align: center; cursor: pointer;"> Preview Module </button>
+                        </div> 
+                    </div>
                     <hr>
                 </div>
             </div>
@@ -35,7 +42,12 @@
             <div class="row">
                 <div class="col-xs-12">
                     <p style="padding: 5px;"></p>
-                    <button type="button" ng-click="saveAndContinue()" class="btn btn-default btn-sm center-block" style="color:#5bc0de;">Save And Continue</button>
+                    <div class="text-center">
+                        <div class="btn-group">
+                            <button type="button" ng-click="saveAndClose()" class="btn btn-default btn-sm center-block" style="color:#5bc0de;">Save And Close</button>
+                            <button ng-show="!user.moderator" type="button" ng-click="requestReview()" class="btn btn-default btn-sm center-block" style="color:#5bc0de;">Request for Review</button>
+                        </div>
+                    </div>
                     <p style="padding: 5px;"></p>
                 </div>
             </div>                   
