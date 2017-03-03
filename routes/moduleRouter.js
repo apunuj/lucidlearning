@@ -10,7 +10,7 @@ var LearningPoints = require('../models/learningPoints');
 var Verify = require('./verify');
 
 moduleRouter.route('/')
-.get(Verify.verifyLearner, function(req, res, next){
+.get(function(req, res, next){
    Modules.find(req.query).populate({
        path: 'topics',
        model: 'Topic',
@@ -84,7 +84,7 @@ moduleRouter.route('/')
 });
 
 moduleRouter.route('/:id')
-.get(Verify.verifyLearner, function(req, res, next){
+.get(function(req, res, next){
     Modules.findById(req.params.id).populate({
         path: 'topics',
         model: 'Topic',

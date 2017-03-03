@@ -2,9 +2,14 @@
 
 angular.module('clientApp')
 
-.controller('TeacherDashboardCtrl', ['$scope','$state','moduleFactory','brainStormingSessionFactory','miniCourseFactory','AuthFactory',function($scope, $state, moduleFactory, brainStormingSessionFactory, miniCourseFactory, AuthFactory){
+.controller('TeacherDashboardCtrl', ['$scope','$state','moduleFactory','brainStormingSessionFactory','miniCourseFactory','AuthFactory', 'ngDialog', function($scope, $state, moduleFactory, brainStormingSessionFactory, miniCourseFactory, AuthFactory, ngDialog){
 
     $scope.user = AuthFactory.getUserDetails();
+    var isAuthenticated = AuthFactory.isAuthenticated();
+
+    $scope.openLogin = function () {
+        ngDialog.open({ template: 'shared/login/login.html', scope: $scope, className: 'ngdialog-theme-default', controller:"LoginCtrl" });
+    };
 
     if ($scope.user.moderator) {
         var filter = {};
@@ -22,6 +27,11 @@ angular.module('clientApp')
     });
 
     $scope.initializeModule = function(){
+
+        if(!isAuthenticated) {
+            $scope.openLogin();
+        }
+
         moduleFactory.save({name: '', topics: [], createdBy: $scope.user._id})
         .$promise.then(function(module){
             initializeBrainStormingSession(module._id);

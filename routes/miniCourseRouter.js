@@ -10,7 +10,7 @@ var MiniCourses = require('../models/miniCourses')
 var Verify = require('./verify');
 
 miniCourseRouter.route('/')
-.get(Verify.verifyLearner, function (req, res, next){
+.get(function (req, res, next){
     console.log(req.query.modules);
     MiniCourses.find(req.query).populate({
         path: 'modules',
@@ -40,7 +40,7 @@ miniCourseRouter.route('/')
 });
 
 miniCourseRouter.route('/:id')
-.get(Verify.verifyLearner, function (req, res, next){
+.get(function (req, res, next){
     MiniCourses.findById(req.params.id).populate({
         path: 'modules',
         select: 'name'
