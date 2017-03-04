@@ -2,7 +2,7 @@
 
 //http://localhost:3000/
 
-//http://ec2-35-154-183-140.ap-south-1.compute.amazonaws.com:3000/
+//http://ec2-35-154-140-57.ap-south-1.compute.amazonaws.com:3000/
 
 
 angular.module('clientApp', [
@@ -13,7 +13,7 @@ angular.module('clientApp', [
   ])
 
 
-.constant('baseUrl', 'http://ec2-35-154-183-140.ap-south-1.compute.amazonaws.com:3000/')
+.constant('baseUrl', 'http://ec2-35-154-140-57.ap-south-1.compute.amazonaws.com:3000/')
 
 
 .config(function($provide){
