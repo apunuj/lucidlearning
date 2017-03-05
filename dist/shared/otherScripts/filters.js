@@ -12,4 +12,10 @@ angular.module('clientApp')
     return function(input) {
       return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
     };
+})
+
+.filter('stripStyles', function() {
+  return function(str) {
+    return str.replace(/style=['"].*["']/, '');
+  };
 });
