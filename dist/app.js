@@ -1,7 +1,7 @@
 'use strict';
 
 //http://localhost:3000/
-//http://ec2-35-154-183-140.ap-south-1.compute.amazonaws.com:80/
+//http://ec2-35-154-140-57.ap-south-1.compute.amazonaws.com:3000/
 
 angular.module('clientApp', [
     'ngDialog',
@@ -192,6 +192,32 @@ angular.module('clientApp', [
             'body': {
                 templateUrl: 'components/teacher/dashboard/moderatorActions.html',
                 controller: 'ModeratorActionsCtrl'
+            }
+        }
+    })
+
+    .state('aboutus', {
+        url: '/aboutUs',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'shared/about.html'
+            }
+        }
+    })
+
+    .state('contactus', {
+        url: '/contact',
+        views: {
+            'navbar': {
+                templateUrl: 'shared/navbar/navBarView.html',
+                controller: 'NavBarCtrl'
+            },
+            'body': {
+                templateUrl: 'shared/contact.html'
             }
         }
     })

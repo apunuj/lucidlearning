@@ -1,6 +1,6 @@
 module.exports = {
     'secretKey': 'kenRobinson',
-    'mongoUrl': 'mongodb://macs-MacBook-Air.local:27017/lucid'
+    'mongoUrl': 'mongodb://Ap00Rv:Apunuj@ds155418.mlab.com:55418/lucid'
 };
 
 //Local and Mlab sandbox dbs, and bitnami too:

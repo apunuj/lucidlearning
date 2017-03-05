@@ -63,9 +63,28 @@ angular.module('clientApp')
         return str.replace(/&amp;\S/g, convert);
     };
 
+    var stripStyles = function(str) {
+        function convert(match) {
+            if(match.indexOf('height') === -1 || match.indexOf('width') === -1){
+                return '';
+            }
+            return match;
+        };
+        return str.replace(/(style=['"].*?["'])+?/g, convert);
+    };
+
+    var stripTrailingLines = function(str) {
+        function convert(match) {
+            return '<p><br/></p>';
+        }
+        return str.replace(/(<p><br\/*><\/p>)+/g, convert);
+    };
+
     //function that returns the promise of updating the content of a learning point
     $scope.saveOne = function(tindex, lindex) {
         $scope.module.topics[tindex].learningPoints[lindex].content = symbolize($scope.module.topics[tindex].learningPoints[lindex].content);
+        $scope.module.topics[tindex].learningPoints[lindex].content = stripStyles($scope.module.topics[tindex].learningPoints[lindex].content);
+        $scope.module.topics[tindex].learningPoints[lindex].content = stripTrailingLines($scope.module.topics[tindex].learningPoints[lindex].content);
         return learningPointFactory.update({
             id: $stateParams.id,
             tid: $scope.module.topics[tindex]._id,
