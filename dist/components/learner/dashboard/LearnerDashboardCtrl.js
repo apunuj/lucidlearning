@@ -4,14 +4,12 @@ angular.module ('clientApp')
    
    $scope.miniCourseListReady = false;
    $scope.moduleListReady = false;
-   $scope.messageMC = 'This is just a brief pause designed to emphasize the gravity of this moment. Take a look at the spinning wheel meanwhile.';
-   $scope.messageM = 'Our computers are still figuring out what you would like to read today. How about staring at the spinning wheel meanwhile?';
-
+   
     $scope.miniCourses = miniCourseFactory.query()
     .$promise.then(function(miniCourses) {
         $scope.miniCourses = miniCourses;
         $scope.miniCourseListReady = true;
-        $scope.modules = moduleFactory.query()
+        $scope.modules = moduleFactory.query({approved:true})
         .$promise.then(function(modules) {
             $scope.modules = modules;
             $scope.moduleListReady = true;

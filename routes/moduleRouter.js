@@ -26,7 +26,7 @@ moduleRouter.route('/')
    });
 })
 .post(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
-    Modules.create({name: req.body.name, topics: []}, function(err, module){
+    Modules.create({name: req.body.name, topics: [], createdBy:req.body.createdBy}, function(err, module){
         if (err) {
             console.log(err);
             next(err);

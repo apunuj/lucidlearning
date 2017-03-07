@@ -2,7 +2,7 @@
 
 angular.module('clientApp')
 
-.controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', '$q', 'AuthFactory', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory, $q, AuthFactory) {
+.controller('ContentCtrl', ['$scope', '$state', '$stateParams', 'moduleFactory', 'learningPointFactory', 'brainStormingSessionFactory', '$q', 'AuthFactory', 'ngDialog', function($scope, $state, $stateParams, moduleFactory, learningPointFactory, brainStormingSessionFactory, $q, AuthFactory, ngDialog) {
     
     $scope.user = AuthFactory.getUserDetails();
     
@@ -211,8 +211,9 @@ angular.module('clientApp')
     $scope.requestReview = function() {
         $scope.saveAll()
         .then(function(response) {
-            moduleFactory.update({id:module._id}, {reviewRequested: true, approved: false})
+            moduleFactory.update({id:$scope.module._id}, {reviewRequested: true, approved: false})
             .$promise.then(function(response){
+                ngDialog.open({template:'components/teacher/makeModule/reviewRequestConfirmation.html', scope: $scope, className: 'ngdialog-theme-default', controller:'ReviewRequestCtrl'});
                 console.log('Review Requested'+response);
             }, function(response) {
                 console.log(response.status);

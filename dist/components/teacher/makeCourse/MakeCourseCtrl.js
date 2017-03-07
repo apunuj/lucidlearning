@@ -2,7 +2,7 @@
 
 angular.module('clientApp')
 
-.controller('MakeCourseCtrl', ['$scope', '$state', '$stateParams', 'miniCourseFactory', 'sectionFactory', 'moduleFactory', 'sectionModuleFactory', 'ngDialog', function($scope, $state, $stateParams, miniCourseFactory, sectionFactory, moduleFactory, sectionModuleFactory, ngDialog){
+.controller('MakeCourseCtrl', ['$scope', '$state', '$stateParams', 'miniCourseFactory', 'moduleFactory', 'ngDialog', function($scope, $state, $stateParams, miniCourseFactory, moduleFactory, ngDialog){
     
     ////////////////////////
     //scope functions-list//
@@ -52,7 +52,7 @@ angular.module('clientApp')
             $scope.moduleIdArray.push($scope.miniCourse.modules[index]._id);
         }
   
-        $scope.modules = moduleFactory.query()
+        $scope.modules = moduleFactory.query({approved:true})
         .$promise.then(function(modulesArray){
             $scope.modules = modulesArray;
             for (var index = 0; index < $scope.modules.length; index++) {

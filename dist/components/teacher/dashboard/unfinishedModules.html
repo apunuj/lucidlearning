@@ -10,6 +10,12 @@
             <button ng-show="user.moderator" class="btn btn-xs btn-default pull-right" ng-click="remove(module._id)">
                 <i class="fa fa-times-circle"></i>
             </button>
+            <span ng-show="module.reviewRequested" class="label label-default pull-right">
+                    submitted, but pending approval
+            </span>
+            <span ng-show="!module.reviewRequested" class="label label-default pull-right">
+                    not submitted yet
+            </span>
         </li>
     </div>
 </div>
