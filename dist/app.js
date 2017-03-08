@@ -12,13 +12,13 @@ angular.module('clientApp', [
   ])
 
 
-.constant('baseUrl', 'http://ec2-35-154-183-140.ap-south-1.compute.amazonaws.com:3000/')
+.constant('baseUrl', 'http://ec2-35-154-140-57.ap-south-1.compute.amazonaws.com:3000/')
 
 
 .config(function($provide){
     $provide.decorator('taOptions', ['$delegate', function(taOptions){
         taOptions.toolbar = [
-        ['p','pre', 'quote','bold', 'italics', 'underline'], ['ul', 'ol', 'clear', 'justifyLeft', 'justifyCenter', 'justifyFull', 'justifyRight'], ['html', 'insertImage','insertLink', 'insertVideo']
+        ['p','pre', 'bold', 'italics', 'underline'], ['ul', 'ol', 'clear', 'justifyLeft', 'justifyCenter', 'justifyFull', 'justifyRight'], ['html', 'insertImage','insertLink', 'insertVideo','wordcount']
         ];
 
         return taOptions;

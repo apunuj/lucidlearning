@@ -162,7 +162,7 @@ moduleRouter.route('/:id/topics')
         });
     }); 
 })
-.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Modules.findById(req.params.id, function(err, module){
         if (err) {
            console.log(err);
@@ -214,7 +214,7 @@ moduleRouter.route('/:id/topics/:tid')
         res.json(topic)
     });
 })
-.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     Topics.findByIdAndRemove(req.params.tid, function(err, resp){
         if (err){
             next(err);
@@ -315,7 +315,7 @@ moduleRouter.route('/:id/topics/:tid/learningPoints/:lid')
        res.json(learningPoint);
     });
 })
-.delete(Verify.verifyLearner, Verify.verifyTeacher, Verify.verifyAdmin, function(req, res, next){
+.delete(Verify.verifyLearner, Verify.verifyTeacher, function(req, res, next){
     LearningPoints.findByIdAndRemove(req.params.lid, function(err, resp){
         if (err){
             next(err);
