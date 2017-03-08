@@ -32,44 +32,7 @@ moduleRouter.route('/')
             next(err);
         }
         else {
-            console.log("initial version of module created");
-        
-            async.eachSeries(req.body.topics, function(topic, outcb) {
-                Topics.create({name: topic.name, learningPoints: []}, function(err, newTopic){
-                    module.topics.push(newTopic._id);
-                    console.log("initial version of topic created");
-                    async.eachSeries(topic.learningPoints, function(learningPoint, cb) {
-                        LearningPoints.create(learningPoint, function(err, newLearningPoint) {
-                            newTopic.learningPoints.push(newLearningPoint._id);
-                            console.log("learning Point Created");
-                            cb();
-                        });
-                    }, function (err) {
-                        if (err) {
-                            next(err);
-                        }
-                        newTopic.save(function(err, newTopic){
-                            console.log(newTopic);
-                            
-                        });
-                        outcb();
-                    });  
-                });
-            }, function(err){
-                if (err) {
-                    next(err);
-                }
-                module.save(function(err, module){
-                    if (err){
-                        console.log(err);
-                        next(err);
-                    }
-                    else {
-                        console.log("module created");
-                        res.json(module);
-                    }
-                });
-            });     
+            res.json(module);  
         }
     });
 })
