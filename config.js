@@ -1,6 +1,6 @@
 module.exports = {
     'secretKey': 'kenRobinson',
-    'mongoUrl': 'mongodb://Ap00Rv:Apunuj@ds155418.mlab.com:55418/lucid'
+    'mongoUrl': 'mongodb://ApunujLucid:6aEck25kHtLIz4q5@cluster0-shard-00-00-pvgll.mongodb.net:27017,cluster0-shard-00-01-pvgll.mongodb.net:27017,cluster0-shard-00-02-pvgll.mongodb.net:27017/lucid?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
 };
 
 //Local and Mlab sandbox dbs, and bitnami too:
