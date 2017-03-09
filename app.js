@@ -41,6 +41,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+//setting up cors
+app.options('*', cors());
+app.use(cors());
 
 //serving static resources:
 
@@ -64,10 +67,6 @@ app.use(passport.initialize());
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-//setting up cors
-app.options('*', cors());
-app.use(cors());
 
 //Setting up routes
 app.use('/users', users);
