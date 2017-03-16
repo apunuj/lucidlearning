@@ -7,7 +7,9 @@ angular.module('clientApp')
     $scope.user = AuthFactory.getUserDetails();
 
     if ($scope.user.moderator) {
-        var filter = {};
+        var filter = {
+            approved: false
+        };
     } else {
         var filter = {
             createdBy: $scope.user._id,
